@@ -1,0 +1,27 @@
+# Workflow customization surface for teach-me-system-design.
+# Override in {project-root}/_bmad/custom/teach-me-system-design.toml (team)
+# or teach-me-system-design.user.toml (personal).
+#   scalars: override wins • arrays: append
+
+[workflow]
+
+activation_steps_prepend = []
+activation_steps_append = []
+
+# Facts the Guide keeps in mind the whole run. Literal sentences or "file:" paths/globs.
+persistent_facts = [
+  "The learner's daily language and hardware may change; ask before assuming a stack.",
+  "The learner is on Windows; lab commands should work in WSL2 + Docker Desktop.",
+  "The learner wants to depend less on AI over time: the Guide's hint level should trend down week by week.",
+]
+
+# Where progress and journal entries live.
+quest_dir = "{output_folder}/system-design-quest"
+
+# The companion artifact page (visual map + checkboxes).
+companion_page = "https://claude.ai/artifact/UzgAazFqS1erGSaASdrFkj"
+
+# Minutes of solo work (no AI, no search) the learner commits to before asking for a hint.
+solo_minutes = 30
+
+on_complete = ""

@@ -1,0 +1,21 @@
+# Secrets and local settings
+.env
+.env.*
+*.pem
+*.key
+.claude/settings.local.json
+
+# Python / tooling caches
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Docker lab runtime data
+citadel/data/
+citadel/**/volumes/

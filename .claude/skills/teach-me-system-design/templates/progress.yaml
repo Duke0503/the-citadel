@@ -1,0 +1,31 @@
+# The Architect's Road: learner progress
+# Written by teach-me-system-design. Safe to edit by hand.
+
+learner:
+  name: "{{user_name}}"
+  language: "{{daily_language}}"     # e.g. Go, Java, TypeScript, Python
+  docker_ready: false
+  hours_per_week: 5
+  started_on: "{{date}}"
+
+current_week: 0
+streak_weeks: 0
+
+misconceptions: []
+#  - text: "Thinks replicas are always in sync"
+#    week: 7
+#    status: open        # open | resolved
+#    resolved_on: null
+
+weeks: {}
+#  "5":
+#    status: in-progress   # not-started | in-progress | cleared
+#    beat: 3               # 0-7, where to resume
+#    started_on: "2026-12-01"
+#    cleared_on: null
+#    cold_answer: "..."
+#    prediction: "..."
+#    prediction_score: null   # 0-3
+#    max_hint: 0              # highest hint-ladder rung used (0 = none)
+#    boss_verdict: null       # defeated | wounded | stands
+#    lenses: {}               # numbers: strong|partial|missing, ...

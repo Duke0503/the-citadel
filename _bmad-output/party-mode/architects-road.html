@@ -1,0 +1,506 @@
+<title>The Architect's Road</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single expedition column; a route strip of acts, then chapter cards (one per week) that open into a five-part week. */
+:root{
+  --paper:#eef2f6; --sheet:#ffffff; --ink:#18243a; --muted:#5b6880; --line:#cfd8e4;
+  --route:#1f4e8c; --fire:#c2670f; --fire-soft:#fbe9d6; --done:#2f7d4f; --done-soft:#e1f1e7;
+  --display:"Alegreya SC", Georgia, serif; --body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
+  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
+  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:880px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2.2rem,6vw,3.4rem);letter-spacing:.01em}
+h2{font-size:1.6rem}
+h3{font-size:1.2rem}
+p{margin:0}
+a{color:var(--route)}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
+code,.mono{font-family:var(--mono);font-size:.86em}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fire)}
+.lede{font-size:1.15rem;color:var(--muted);max-width:62ch}
+
+/* hero */
+.hero{display:flex;flex-direction:column;gap:14px}
+.status{display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:end;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px}
+.rank{font-family:var(--display);font-size:1.35rem}
+.rank small{display:block;font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.pct{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.bar{grid-column:1/-1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--route),var(--fire));transition:width .5s}
+.sync{grid-column:1/-1;font-size:.82rem;color:var(--muted)}
+
+/* rhythm + oaths */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.rhythm{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rhythm li{display:grid;grid-template-columns:7.5em 1fr;gap:8px}
+.rhythm b{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--fire);padding-top:3px}
+.oaths{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+
+/* route */
+.route{display:flex;gap:0;overflow-x:auto;padding:4px 2px 8px}
+.stop{flex:1 0 118px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative;text-decoration:none;color:var(--ink);padding:0 4px}
+.stop::before{content:"";position:absolute;top:15px;left:-50%;width:100%;height:2px;background:repeating-linear-gradient(90deg,var(--route) 0 6px,transparent 6px 11px);z-index:0}
+.stop:first-child::before{display:none}
+.dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--route);background:var(--sheet);display:grid;place-items:center;font-family:var(--display);font-size:.9rem;z-index:1;position:relative}
+.stop.full .dot{background:var(--done);border-color:var(--done);color:var(--sheet)}
+.stop span{font-family:var(--display);font-size:.95rem;line-height:1.2}
+.stop em{font-style:normal;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+
+/* acts & chapters */
+.act{display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.act-head{display:flex;flex-direction:column;gap:4px;border-top:2px solid var(--route);padding-top:14px}
+.act-head p{color:var(--muted);max-width:64ch}
+details.ch{background:var(--sheet);border:1px solid var(--line);border-radius:10px}
+details.ch[open]{border-color:var(--route)}
+details.ch.complete{border-left:5px solid var(--done)}
+summary{cursor:pointer;list-style:none;padding:14px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+summary::-webkit-details-marker{display:none}
+.wk{font-family:var(--mono);font-size:.75rem;color:var(--muted);text-align:center;min-width:3.2em;line-height:1.1}
+.wk b{display:block;font-size:1.15rem;color:var(--ink);font-family:var(--display)}
+.ttl{min-width:0}
+.ttl small{display:block;color:var(--muted);font-size:.9rem}
+.cnt{font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.complete .cnt{color:var(--done)}
+.body{padding:0 16px 18px;display:flex;flex-direction:column;gap:14px}
+.quest{font-style:italic;background:var(--fire-soft);border-radius:8px;padding:10px 14px}
+.part{display:grid;grid-template-columns:8.5em 1fr;gap:10px;min-width:0}
+.part > b{font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--route);padding-top:4px}
+.part ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.task{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start}
+.task input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--done);cursor:pointer}
+.task label{cursor:pointer;min-width:0;overflow-wrap:anywhere}
+.task input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
+.na{color:var(--muted);font-size:.92rem}
+.tag{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:1px 7px;border-radius:99px;background:var(--done-soft);color:var(--done);margin-left:6px;vertical-align:2px}
+.scroll{display:flex;flex-direction:column;gap:6px}
+.scroll label{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fire)}
+.scroll textarea{width:100%;min-height:84px;resize:vertical;font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px}
+.loot{font-size:.92rem;color:var(--muted)}
+.loot b{color:var(--ink)}
+.foot{color:var(--muted);font-size:.9rem;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:16px}
+pre.tpl{font-family:var(--mono);font-size:.8rem;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0;overflow-x:auto;white-space:pre}
+
+@media (max-width:640px){
+  .two{grid-template-columns:1fr}
+  .part{grid-template-columns:1fr;gap:4px}
+  .rhythm li{grid-template-columns:1fr;gap:0}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Field guide · 25 chapters · about 5 hours a week</div>
+    <h1>The Architect's Road</h1>
+    <p class="lede">You start as an apprentice with an empty workshop. Each week you add one real piece to your own small city of servers (the <b>Citadel</b>), watch it work, break it on purpose, and repair it. By the end you can design systems from scratch and you have the skills to build your own simulator.</p>
+    <div class="status" aria-live="polite">
+      <div class="rank" id="rank"><small>Current rank</small>Apprentice</div>
+      <div class="pct" id="pct">0 / 0</div>
+      <div class="bar"><i id="barfill"></i></div>
+      <div class="sync" id="sync">Progress is saved in this browser.</div>
+    </div>
+  </header>
+
+  <section class="two">
+    <div class="panel">
+      <h3>Every week</h3>
+      <ul class="rhythm">
+        <li><b>Mon – Tue</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Read</b> the theory (30–45 min a day)</span></li>
+        <li><b>Wed</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Watch</b> it run in a visualizer</span></li>
+        <li><b>Thu – Fri</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Build</b> it for real in the Citadel</span></li>
+        <li><b>Weekend</b><span>Face the <b style="color:var(--ink);font-family:var(--body);font-size:1em">Boss</b>, write the journal</span></li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>The four oaths</h3>
+      <ol class="oaths">
+        <li><b>Predict before you press.</b> Write what you expect, then run it.</li>
+        <li><b>First 30 minutes alone.</b> No AI and no search on a new problem.</li>
+        <li><b>AI is your opponent, not your author.</b> Ask it to attack your design, never to write it.</li>
+        <li><b>Design first, read the answer after.</b> The gap between them is the lesson.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3>Your Guide</h3>
+    <p>An old architect who tells each lesson as a chapter of your story. Each week a named Foe attacks your Citadel. The Guide sets the scene, asks for your prediction, sends you on missions with real tools, then fights your design in the Boss battle. You'll get questions and hints, never finished answers. Call it in Claude Code:</p>
+    <ul class="rhythm">
+      <li><b>Start / resume</b><span><code>/teach-me-system-design start week 0</code> or <code>continue</code></span></li>
+      <li><b>Boss battle</b><span><code>/teach-me-system-design review my boss</code>, then paste your design</span></li>
+      <li><b>Recall</b><span><code>/teach-me-system-design quiz me</code> on weeks you've cleared</span></li>
+      <li><b>Map</b><span><code>/teach-me-system-design where am I</code></span></li>
+    </ul>
+  </section>
+
+  <nav class="route" id="route" aria-label="Acts"></nav>
+  <main id="acts" style="display:flex;flex-direction:column;gap:36px"></main>
+
+  <footer class="foot">
+    <h3 style="color:var(--ink)">Field log template</h3>
+    <pre class="tpl"># Field Log: Week N, &lt;chapter&gt;   (Foe: &lt;name&gt;)
+&gt; 2–3 lines in your own voice: what the Citadel faced
+
+Cold question:  what I said then / what I'd say now
+Prediction:     what I thought would happen
+Reality:        what the Citadel showed (numbers, screenshot)
+The gap:        the real lesson
+The battle:     my defense, and what the masters did that I didn't
+Still in fog:   what I don't get yet</pre>
+    <p>Links were collected from memory. If one has moved, search the title. The Citadel is your own repo with one <code>docker-compose.yml</code> that grows each week. Write your app in whichever language you use every day.</p>
+    <p>Act V is about building <b>your own original</b> simulator. Study other products as a user and from open-source code whose license allows it. Do not copy anyone's lessons, art or code.</p>
+  </footer>
+</div>
+
+<script>
+const L=(t,u)=>({t,u});
+const ACTS=[
+ {id:"prologue",n:"0",name:"Prologue",title:"Prologue: The Workshop",story:"Every architect needs a place to build. This week you set it up."},
+ {id:"roads",n:"I",name:"The Roads",title:"Act I: The Roads",story:"Before cities, roads. How do two machines actually talk? No more \"magic box\"."},
+ {id:"citadel",n:"II",name:"The Citadel",title:"Act II: The Citadel",story:"Each week you add one building block to your city, watch it work, then break it."},
+ {id:"designs",n:"III",name:"Grand Designs",title:"Act III: The Grand Designs",story:"You know the pieces. Now design whole systems yourself before you read how the real ones were built."},
+ {id:"uncharted",n:"IV",name:"Uncharted",title:"Act IV: The Uncharted Lands",story:"The territory the core plan skipped: APIs, storage, search, security and the world beyond one region."},
+ {id:"forge",n:"V",name:"The Forge",title:"Act V: The Architect's Forge",story:"You've learned systems. Now learn to simulate them, and lay the first stone of your own simulator."}
+];
+const W=[
+ {w:0,act:"prologue",t:"Forge the Workshop",sub:"Docker, WSL2, your Citadel repo",
+  q:"An empty plot of land and a toolbox. Nothing can be built until the workshop stands.",
+  read:[L("Install WSL2 (Microsoft Learn)","https://learn.microsoft.com/en-us/windows/wsl/install"),L("Docker: Get started","https://docs.docker.com/get-started/")],
+  watch:[],
+  build:["Install WSL2 + Docker Desktop","Create a git repo called <code>citadel</code> with an empty <code>docker-compose.yml</code>","Run <code>docker run hello-world</code>, then an <code>nginx</code> container","Create <code>journal.md</code>, your field journal"],
+  boss:"In three sentences, from memory: what is a container, and how is it different from a virtual machine?",
+  p:"What do you think happens when Docker 'starts' a container? What is actually running?",
+  loot:"A working lab you'll use for the next 24 weeks."},
+ {w:1,act:"roads",t:"The Messenger's Handshake",sub:"TCP, latency, HTTP basics",
+  q:"A message leaves your machine. Before a single byte of the page arrives, the messengers must greet each other. How many times?",
+  read:[L("HPBN: Primer on Latency and Bandwidth","https://hpbn.co/primer-on-latency-and-bandwidth/"),L("HPBN: Building Blocks of TCP","https://hpbn.co/building-blocks-of-tcp/"),L("System Design Primer: latency numbers","https://github.com/donnemartin/system-design-primer#latency-numbers-every-programmer-should-know")],
+  watch:[L("Wireshark: capture <code>curl http://localhost</code>, filter <code>tcp.port == 80</code>, find SYN / SYN-ACK / ACK","https://www.wireshark.org/")],
+  build:["Add nginx to the Citadel","<code>curl -v</code> it and read every line of output","Capture two requests: one new connection vs a reused (keep-alive) one"],
+  boss:"Draw from memory everything that happens between typing a URL and seeing the page.",
+  p:"How many round trips before the first byte of the response arrives?",
+  loot:"You can explain TCP handshakes, latency and why distance matters."},
+ {w:2,act:"roads",t:"The Map of Names",sub:"DNS, forward and reverse proxies",
+  q:"Machines know numbers, people know names. Someone keeps the map, and someone guards the gate.",
+  read:[L("Cloudflare: What is DNS?","https://www.cloudflare.com/learning/dns/what-is-dns/"),L("System Design Primer: reverse proxy","https://github.com/donnemartin/system-design-primer#reverse-proxy-web-server")],
+  watch:[L("messwithdns.net: create a record and watch lookups arrive live","https://messwithdns.net/")],
+  build:["Write a tiny app (your language) that returns its own hostname","Run two copies; put nginx in front as a reverse proxy","Run <code>dig +trace example.com</code> and follow each hop"],
+  boss:"Explain forward proxy vs reverse proxy, and why every large website runs the second.",
+  p:"When you dig +trace, how many servers do you expect to be asked?",
+  loot:"You understand how a name becomes an address and how traffic reaches your servers."},
+ {w:3,act:"roads",t:"Tongues of the Realm",sub:"TLS, HTTP/2, WebSockets, gRPC",
+  q:"Some messengers speak once and leave, some keep the line open. Choose the right language for each errand.",
+  read:[L("HPBN: Transport Layer Security","https://hpbn.co/transport-layer-security-tls/"),L("HPBN: HTTP/2","https://hpbn.co/http2/"),L("gRPC: Core concepts","https://grpc.io/docs/what-is-grpc/core-concepts/")],
+  watch:[L("Browser DevTools → Network: turn on the Protocol column on a big site; open a WebSocket's Messages tab","https://developer.chrome.com/docs/devtools/network")],
+  build:["Add a WebSocket echo endpoint to your app","Put TLS on nginx with a self-signed certificate","Compare <code>curl -v --http1.1</code> and <code>--http2</code>"],
+  boss:"For a live chat, a stock ticker and a file upload: WebSockets, polling or gRPC streaming? Defend each choice.",
+  p:"How much faster will HTTP/2 be than HTTP/1.1 for a page with 50 small files? Why?",
+  loot:"You can choose a protocol by its trade-offs."},
+ {w:4,act:"citadel",t:"The Gatekeepers",sub:"Load balancing + back-of-envelope math",sd:1,
+  q:"Your city has three workshops now, and one of them is slow. The gatekeeper decides who gets each visitor.",
+  read:[L("samwho.dev: Load Balancing","https://samwho.dev/load-balancing/"),L("System Design Primer: load balancer","https://github.com/donnemartin/system-design-primer#load-balancer"),L("System Design Primer: back-of-the-envelope tables","https://github.com/donnemartin/system-design-primer#appendix")],
+  watch:[L("samwho.dev: switch algorithms and watch dropped requests","https://samwho.dev/load-balancing/")],
+  build:["nginx upstream with three app copies; make one copy slow (add a sleep)","Load test with <a href=\"https://grafana.com/docs/k6/latest/\">k6</a>: round robin vs <code>least_conn</code>, compare p95 latency","systemdesigner.io: build client → load balancer → servers"],
+  boss:"10M daily users, 20 requests each. What are the average and peak requests per second? How many servers at 500 req/s each?",
+  p:"With one slow server, how much worse is round robin's p95 than least connections?",
+  loot:"Load-balancing algorithms and your first real estimation."},
+ {w:5,act:"citadel",t:"The Memory Vaults",sub:"Caching with Redis",sd:1,
+  q:"The archive is slow. The vault remembers recent answers, but what it remembers can go stale or vanish at once.",
+  read:[L("System Design Primer: cache","https://github.com/donnemartin/system-design-primer#cache"),L("AWS Builders' Library: Caching challenges and strategies","https://aws.amazon.com/builders-library/caching-challenges-and-strategies/"),L("Redis University (free courses)","https://university.redis.io/")],
+  watch:[L("RedisInsight: watch keys appear, expire and get evicted","https://redis.io/insight/")],
+  build:["Add Redis; cache-aside on a slow endpoint","Set TTLs; set <code>maxmemory 10mb</code> + <code>allkeys-lru</code>, fill it, read <code>INFO stats</code>","systemdesigner.io: add a cache, compare latency"],
+  boss:"Cache stampede: let a hot key expire under k6 load, watch the database suffer, then fix it (lock or jittered TTL).",
+  p:"When the hot key expires, how many requests hit the database at once?",
+  loot:"Caching patterns, eviction, and a stampede you caused and fixed yourself."},
+ {w:6,act:"citadel",t:"The Great Archive",sub:"Databases, indexes, B-trees",sd:1,
+  q:"A million records in the archive. Without an index the archivist reads every page.",
+  read:[L("Use The Index, Luke: Anatomy of an index","https://use-the-index-luke.com/sql/anatomy"),L("System Design Primer: database","https://github.com/donnemartin/system-design-primer#database")],
+  watch:[L("USFCA visualization: insert 20 keys into a B+ tree and watch it split","https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html")],
+  build:["Add Postgres; create a table with 1M rows using <code>generate_series</code>","<code>EXPLAIN ANALYZE</code> a lookup, add an index, compare","systemdesigner.io: SQL vs NoSQL in a read-heavy design"],
+  boss:"Find a query where your index does NOT help, and explain why.",
+  p:"How much faster will the indexed lookup be: 2x, 100x, 10,000x?",
+  loot:"You can read a query plan and explain how an index works."},
+ {w:7,act:"citadel",t:"The Mirrored Archives",sub:"Replication and sharding",sd:1,
+  q:"One archive is a single point of failure. Copies help, but copies disagree for a moment.",
+  read:[L("System Design Primer: replication, federation, sharding","https://github.com/donnemartin/system-design-primer#relational-database-management-system-rdbms")],
+  watch:[],
+  build:["Run a Postgres primary + a read replica","Write to the primary, read from the replica right away, and measure the lag","Pause the replica, keep writing, unpause, and watch it catch up"],
+  boss:"Shard a users table of 1 billion rows: which key? What goes wrong with one very famous user?",
+  p:"How many milliseconds of replication lag on your laptop? What could a user notice?",
+  loot:"Replication lag, read-your-writes, shard keys and hot spots."},
+ {w:8,act:"citadel",t:"The Couriers' Guild",sub:"Message queues and Kafka basics",sd:1,
+  q:"Not every task needs an answer now. The Guild carries messages so senders don't wait for receivers.",
+  read:[L("Apache Kafka: Introduction","https://kafka.apache.org/intro"),L("Confluent Developer: free Kafka courses (start with Kafka 101)","https://developer.confluent.io/courses/")],
+  watch:[L("SoftwareMill Kafka visualization: partitions and replicas","https://softwaremill.com/kafka-visualisation/")],
+  build:["Add Kafka + <a href=\"https://github.com/kafbat/kafka-ui\">Kafka UI</a> to the Citadel","Write a producer and a consumer in your language","Topic with 3 partitions: send keyed messages and watch where they land"],
+  boss:"Why does Kafka only guarantee order inside one partition? Prove it in your lab.",
+  p:"With 3 partitions and keys A, B, C, which partition does each key go to? Will it stay that way?",
+  loot:"Topics, partitions, keys and why queues decouple systems."},
+ {w:9,act:"citadel",t:"Secrets of the Guild",sub:"Consumer groups, lag, rebalancing",sd:1,
+  q:"The couriers can't keep up. Hire more, and watch the Guild reshuffle every route.",
+  read:[L("Kafka documentation: design (consumers, delivery semantics)","https://kafka.apache.org/documentation/#design"),L("Confluent Developer courses (consumer groups)","https://developer.confluent.io/courses/")],
+  watch:[L("Kafka UI: watch consumer lag grow and shrink","https://github.com/kafbat/kafka-ui")],
+  build:["Make a slow consumer and watch lag grow","Add consumers to the group and watch the rebalance","Run 3 brokers with replication factor 3; stop one broker"],
+  boss:"Make your consumer process a message twice, then make the processing idempotent.",
+  p:"With 3 partitions, what happens when you start a 4th consumer in the group?",
+  loot:"Lag, rebalancing, at-least-once delivery and idempotency."},
+ {w:10,act:"citadel",t:"The Council of Nodes",sub:"Consensus with Raft",sd:1,
+  q:"Three elders must agree on one truth even when one falls silent. Who leads, and what happens when the leader is gone?",
+  read:[L("Raft paper (sections 1–5)","https://raft.github.io/raft.pdf")],
+  watch:[L("The Secret Lives of Data: Raft","https://thesecretlivesofdata.com/raft/"),L("raft.github.io: RaftScope, stop the leader and watch","https://raft.github.io/")],
+  build:["Run a 3-node <a href=\"https://etcd.io/docs/\">etcd</a> cluster","Write and read keys; kill the leader; check <code>etcdctl endpoint status</code>","Kill 2 of 3 nodes. Can you still write?"],
+  boss:"Explain why 3 nodes survive 1 failure, but 4 nodes still only survive 1.",
+  p:"How long will the cluster go without a leader after you kill it?",
+  loot:"Leader election, quorum and split-brain."},
+ {w:11,act:"citadel",t:"The Shield Wall",sub:"Timeouts, retries, circuit breakers, rate limits",sd:1,
+  q:"One slow dependency can drag the whole city down. Build walls so one failure stays one failure.",
+  read:[L("AWS: Timeouts, retries and backoff with jitter","https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/"),L("Martin Fowler: Circuit Breaker","https://martinfowler.com/bliki/CircuitBreaker.html"),L("Google SRE book: Addressing cascading failures","https://sre.google/sre-book/addressing-cascading-failures/")],
+  watch:[L("Real outage stories: danluu/post-mortems","https://github.com/danluu/post-mortems")],
+  build:["<code>docker pause</code> Postgres while k6 runs: what does your app do?","Add timeouts, then retries with backoff + jitter","Add a circuit breaker and a token-bucket rate limiter you write yourself"],
+  boss:"Cause a retry storm on purpose, then stop it.",
+  p:"When the database pauses for 10 seconds, how long until your whole app stops responding?",
+  loot:"Resilience patterns, tested against failures you injected yourself."},
+ {w:12,act:"citadel",t:"The Watchtower",sub:"Observability and scaling",sd:1,
+  q:"You can't defend what you can't see. Build the tower and light the signal fires.",
+  read:[L("Google SRE book: Monitoring distributed systems","https://sre.google/sre-book/monitoring-distributed-systems/"),L("OpenTelemetry: concepts","https://opentelemetry.io/docs/concepts/"),L("Prometheus: overview","https://prometheus.io/docs/introduction/overview/")],
+  watch:[L("Grafana: your own dashboards","https://grafana.com/docs/grafana/latest/")],
+  build:["Add Prometheus + Grafana","Dashboard: request rate, errors, p95 latency, cache hit ratio, Kafka lag","Replay the bosses from weeks 5 and 11 and watch the graphs"],
+  boss:"Have a friend (or your past self, with a timer) inject a failure. Diagnose it from the dashboard alone.",
+  p:"Which graph will show the problem first?",
+  loot:"Your Citadel is complete and visible."},
+ {w:13,act:"designs",t:"The Short Road",sub:"URL shortener + rate limiter",sd:1,
+  q:"A traveler wants a short name for a long road, a billion times a day.",
+  read:[L("Read only AFTER your design: System Design Primer, Pastebin/bit.ly solution","https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md")],
+  watch:[L("systemdesigner.io: build your design and run traffic through it","https://systemdesigner.io/")],
+  build:["Design on paper in 4 steps: requirements + numbers → API + data model → high-level design → bottlenecks","Rebuild it in systemdesigner.io and push traffic","Optional: build a minimal shortener in the Citadel"],
+  boss:"Write a one-page design doc, compare it with the reference, and list every gap.",
+  p:"Read-to-write ratio? Storage after 5 years?",
+  loot:"Your first full design, made before you saw the answer."},
+ {w:14,act:"designs",t:"The Endless Conversation",sub:"Chat system",sd:1,
+  q:"Millions of voices, each expecting their words to arrive instantly, in order, even to a friend who is asleep.",
+  read:[L("Read only AFTER your design: Discord, How Discord stores trillions of messages","https://discord.com/blog/how-discord-stores-trillions-of-messages")],
+  watch:[L("systemdesigner.io","https://systemdesigner.io/")],
+  build:["Design first, using the same 4 steps","Prototype with your week 3 WebSocket app + week 8 Kafka"],
+  boss:"How does a message reach a user who is offline? Or one connected to a different server?",
+  p:"Where is the hardest part of this system?",
+  loot:"Real-time delivery, presence and message storage."},
+ {w:15,act:"designs",t:"The Town Crier",sub:"News feed and notifications",sd:1,
+  q:"A celebrity speaks and fifty million followers must hear. Do you shout at once, or let them come and listen?",
+  read:[L("Read only AFTER your design: System Design Primer, Twitter timeline","https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md")],
+  watch:[L("systemdesigner.io","https://systemdesigner.io/")],
+  build:["Design first","Compare fan-out on write vs fan-out on read in systemdesigner.io"],
+  boss:"Design the feed for a celebrity with 50M followers. What changes from a normal user?",
+  p:"Which one breaks first at celebrity scale: writes or reads?",
+  loot:"Fan-out trade-offs. You can now hold your own in a system design interview."},
+ {w:16,act:"uncharted",t:"The Treaty Halls",sub:"API design and data modeling",sd:1,
+  q:"Every system speaks to others through treaties. A bad treaty lasts forever.",
+  read:[L("Google API design guide","https://cloud.google.com/apis/design"),L("Stripe: Designing robust APIs with idempotency","https://stripe.com/blog/idempotency")],
+  watch:[],
+  build:["Add cursor pagination to your API","Add idempotency keys to a 'create' endpoint and send the same request twice"],
+  boss:"Design the schema and API for a booking system that can never double-book.",
+  p:"What breaks with offset pagination when new rows keep arriving?",
+  loot:"APIs that survive retries and growth."},
+ {w:17,act:"uncharted",t:"The Far Warehouses",sub:"Object storage, CDN, search",sd:1,
+  q:"Big things live far away: videos, images, and the index that lets you find anything.",
+  read:[L("Cloudflare: What is a CDN?","https://www.cloudflare.com/learning/cdn/what-is-a-cdn/"),L("System Design Primer: CDN","https://github.com/donnemartin/system-design-primer#content-delivery-network"),L("Meilisearch docs (search engine)","https://www.meilisearch.com/docs")],
+  watch:[],
+  build:["Add <a href=\"https://min.io/\">MinIO</a> (S3-compatible); upload images through presigned URLs","Add Meilisearch and index your shortened URLs"],
+  boss:"Where does a 2 GB video upload go, and how does a viewer in Vietnam get it fast?",
+  p:"Why shouldn't large files go through your app servers?",
+  loot:"Blob storage, CDNs and inverted indexes."},
+ {w:18,act:"uncharted",t:"The Locksmiths",sub:"Security basics",sd:0,
+  q:"A city with no locks is a city for thieves. Learn how the locks work.",
+  read:[L("OWASP Top 10","https://owasp.org/Top10/"),L("OAuth 2 Simplified (Aaron Parecki)","https://aaronparecki.com/oauth-2-simplified/"),L("jwt.io: Introduction","https://jwt.io/introduction")],
+  watch:[L("jwt.io debugger: decode your own tokens","https://jwt.io/")],
+  build:["Add login with JWT to your app","Hash passwords with bcrypt or argon2","Rate-limit the login endpoint"],
+  boss:"Find three ways to attack your own app (only your own), then close them.",
+  p:"What can someone do with a stolen JWT, and for how long?",
+  loot:"Authentication, authorization and the most common holes."},
+ {w:19,act:"uncharted",t:"Across the Seas",sub:"Event-driven patterns and multi-region",sd:1,
+  q:"Your empire spans oceans. Messages take time, and no single ledger can be everywhere at once.",
+  read:[L("microservices.io: Saga","https://microservices.io/patterns/data/saga.html"),L("Martin Fowler: Event Sourcing","https://martinfowler.com/eaaDev/EventSourcing.html"),L("Martin Fowler: CQRS","https://martinfowler.com/bliki/CQRS.html"),L("Amazon Dynamo paper","https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf")],
+  watch:[],
+  build:["Build an order saga across two services over Kafka","Add latency between 'regions' with <a href=\"https://github.com/Shopify/toxiproxy\">Toxiproxy</a>"],
+  boss:"A user in Vietnam and one in the US edit the same record at the same time. Consistency or speed? Defend it.",
+  p:"What happens to your saga if step 2 fails after step 1 succeeded?",
+  loot:"Distributed transactions without 2PC, and the real cost of distance."},
+ {w:20,act:"forge",t:"Study the Masters",sub:"Product teardown (as a user)",sd:1,
+  q:"Before forging your own blade, study the work of other smiths by holding it, not by breaking into their forge.",
+  read:[L("Your own journal from weeks 1–19","#acts")],
+  watch:[L("fivenines.dev: free chapter, played as a normal user","https://fivenines.dev/"),L("Server Survival","https://pshenok.github.io/server-survival/"),L("systemdesigner.io","https://systemdesigner.io/")],
+  build:["Teardown notes: how a lesson flows, what is simulated, what is faked, what made you understand","No reverse engineering of their code or content"],
+  boss:"Write a one-page brief for YOUR original simulator: who it's for, and its first 5 lessons.",
+  p:"Which lesson from this road would have helped you most as a game?",
+  loot:"A product vision that is yours."},
+ {w:21,act:"forge",t:"The Mathematics of Waiting",sub:"Queueing theory",sd:0,
+  q:"Every line at every gate obeys the same law. Learn it, and you can predict the crowd.",
+  read:[L("samwho.dev: the queueing article","https://samwho.dev/"),L("Little's Law","https://en.wikipedia.org/wiki/Little%27s_law")],
+  watch:[],
+  build:["In your language, simulate one server with random arrivals","Plot latency against utilization; compare with your week 4 k6 numbers"],
+  boss:"Explain why latency explodes once utilization goes past about 80%.",
+  p:"At 90% utilization, how many times worse is the wait than at 50%?",
+  loot:"The math under every simulator."},
+ {w:22,act:"forge",t:"The Clockwork Engine",sub:"Discrete-event simulation",sd:0,
+  q:"Time in a simulation is a list of events waiting their turn. Build the clock.",
+  read:[L("SimPy docs: concepts (read for ideas, use any language)","https://simpy.readthedocs.io/")],
+  watch:[],
+  build:["Write a tiny event engine: a priority queue ordered by time","Model a load balancer + 2 servers + a cache","Reproduce your week 4 and week 5 lab results inside the simulation"],
+  boss:"Your simulation and your real lab disagree. Find out why.",
+  p:"Which real-world effect will your first simulation forget?",
+  loot:"A working simulation engine you understand fully."},
+ {w:23,act:"forge",t:"Reading the Old Maps",sub:"Open-source simulators + your architecture",sd:0,
+  q:"Others have walked part of this road. Read their maps where they invite you to, then draw your own.",
+  read:[L("Open-source simulator repos from your research (check each license first)","#acts")],
+  watch:[],
+  build:["Architecture doc for your simulator: engine in a Web Worker, canvas UI, lessons as JSON","Write 3 decision records (ADRs) with trade-offs"],
+  boss:"Defend your 3 decisions to an AI acting as a hostile reviewer.",
+  p:"Which part will be the hardest to build?",
+  loot:"A design for your own product."},
+ {w:24,act:"forge",t:"The First Stone",sub:"Your first playable lesson",sd:0,
+  q:"Every city began with a single stone. Lay yours.",
+  read:[],
+  watch:[],
+  build:["Build one playable lesson (load balancing) with your own style and words","Back it with your own engine from week 22"],
+  boss:"Give it to a friend and watch them play without helping. Write down every moment they get stuck.",
+  p:"Where will your friend get stuck first?",
+  loot:"You started as an apprentice. You are now an architect who builds."}
+];
+
+const FOES=["The Rust","The Long Silence","The Lost Courier","The Babel Wind","The Slow Gate","The Stampede","The Endless Scroll","The Laggard Twin","The Tangled Post","The Backlog Beast","The Split Crown","The Echo Storm","The Fog","The Billion Doors","The Sleeping Friend","The Celebrity's Voice","The Broken Treaty","The Far Mountain","The Thief in Gray","The Wide Ocean","The Mirror","The Crowd at the Gate","The Clockwork Ghost","The Labyrinth","The Blank Page"];
+
+/* ---------- state ---------- */
+const KEY="architects-road-v1";
+let S={done:{},notes:{}};
+try{const raw=localStorage.getItem(KEY); if(raw){const o=JSON.parse(raw); S={done:o.done||{},notes:o.notes||{}};}}catch(e){}
+let dbRef=null, saveTimer=null, saving=false, pending=false;
+const syncEl=document.getElementById("sync");
+
+function persist(){
+  try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+  if(!dbRef) return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(flush,800);
+}
+async function flush(){
+  if(saving){pending=true;return}
+  saving=true;
+  try{await dbRef.set({done:S.done,notes:S.notes,updated:new Date().toISOString()}); syncEl.textContent="Progress saved to your account. It follows you to other devices.";}
+  catch(e){syncEl.textContent="Couldn't save to your account. Progress is kept in this browser.";}
+  saving=false;
+  if(pending){pending=false;flush();}
+}
+
+/* ---------- render ---------- */
+const tasksOf=w=>{
+  const k=[];
+  w.read.forEach((_,i)=>k.push(w.w+"-r"+i));
+  w.watch.forEach((_,i)=>k.push(w.w+"-w"+i));
+  w.build.forEach((_,i)=>k.push(w.w+"-b"+i));
+  if(w.sd) k.push(w.w+"-sd");
+  k.push(w.w+"-boss");
+  return k;
+};
+const ALL=W.flatMap(tasksOf);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function task(id,html){
+  return `<li class="task"><input type="checkbox" id="t-${id}" data-k="${id}" ${S.done[id]?"checked":""}><label for="t-${id}">${html}</label></li>`;
+}
+function link(l){return `<a href="${l.u}" target="_blank" rel="noopener">${l.t}</a>`}
+
+function chapter(w){
+  const parts=[];
+  parts.push(`<div class="part"><b>Read</b>${w.read.length?`<ul>${w.read.map((l,i)=>task(w.w+"-r"+i,link(l))).join("")}</ul>`:`<span class="na">No reading this week, only building.</span>`}</div>`);
+  parts.push(`<div class="part"><b>Watch</b>${w.watch.length?`<ul>${w.watch.map((l,i)=>task(w.w+"-w"+i,link(l))).join("")}</ul>`:`<span class="na">No visualizer for this one. Your own Citadel is the view.</span>`}</div>`);
+  const b=w.build.map((t,i)=>task(w.w+"-b"+i,t));
+  if(w.sd) b.push(task(w.w+"-sd",`Weekend sandbox: rebuild this week's piece in <a href="https://systemdesigner.io/" target="_blank" rel="noopener">systemdesigner.io</a><span class="tag">simulator</span>`));
+  parts.push(`<div class="part"><b>Build</b><ul>${b.join("")}</ul></div>`);
+  parts.push(`<div class="part"><b>Boss</b><ul>${task(w.w+"-boss",`<strong>${FOES[w.w]}</strong> attacks. ${w.boss}`)}</ul></div>`);
+  return `<details class="ch" id="ch-${w.w}" data-w="${w.w}">
+    <summary><div class="wk">Week<b>${w.w}</b></div><div class="ttl"><h3>${w.t}</h3><small>${w.sub} · Foe: ${FOES[w.w]}</small></div><div class="cnt" id="c-${w.w}"></div></summary>
+    <div class="body">
+      <p class="quest">${w.q}</p>
+      <p class="na">Play this chapter with your Guide: <code>/teach-me-system-design start week ${w.w}</code></p>
+      ${parts.join("")}
+      <div class="scroll"><label for="n-${w.w}">Prediction scroll: ${w.p}</label>
+        <textarea id="n-${w.w}" data-n="${w.w}" placeholder="Write your guess before you start. Add what really happened afterwards.">${esc(S.notes[w.w]||"")}</textarea></div>
+      <p class="loot"><b>Loot:</b> ${w.loot}</p>
+    </div></details>`;
+}
+
+function render(){
+  const acts=document.getElementById("acts");
+  acts.innerHTML=ACTS.map(a=>`<section class="act" id="act-${a.id}">
+     <div class="act-head"><div class="eyebrow">Act ${a.n}</div><h2>${a.title}</h2><p>${a.story}</p></div>
+     ${W.filter(w=>w.act===a.id).map(chapter).join("")}</section>`).join("");
+  const first=W.find(w=>!tasksOf(w).every(k=>S.done[k]));
+  if(first){const d=document.getElementById("ch-"+first.w); if(d) d.open=true;}
+  update();
+}
+
+const RANKS=[[0,"Apprentice"],[0.2,"Journeyman"],[0.45,"Builder"],[0.7,"Architect"],[1,"Master Architect"]];
+function update(){
+  const n=ALL.filter(k=>S.done[k]).length, f=ALL.length?n/ALL.length:0;
+  document.getElementById("pct").textContent=`${n} / ${ALL.length} tasks · ${Math.round(f*100)}%`;
+  document.getElementById("barfill").style.width=(f*100)+"%";
+  let r=RANKS[0][1]; RANKS.forEach(([t,name])=>{if(f>=t)r=name});
+  document.getElementById("rank").innerHTML=`<small>Current rank</small>${r}`;
+  W.forEach(w=>{
+    const ks=tasksOf(w), d=ks.filter(k=>S.done[k]).length, c=document.getElementById("c-"+w.w);
+    if(c) c.textContent=d===ks.length?"Cleared":`${d} / ${ks.length}`;
+    const ch=document.getElementById("ch-"+w.w); if(ch) ch.classList.toggle("complete",d===ks.length);
+  });
+  document.getElementById("route").innerHTML=ACTS.map(a=>{
+    const ks=W.filter(w=>w.act===a.id).flatMap(tasksOf), d=ks.filter(k=>S.done[k]).length;
+    return `<a class="stop ${d===ks.length?"full":""}" href="#act-${a.id}"><div class="dot">${a.n}</div><span>${a.name}</span><em>${Math.round(d/ks.length*100)}%</em></a>`;
+  }).join("");
+}
+
+document.addEventListener("change",e=>{
+  const k=e.target.dataset&&e.target.dataset.k; if(!k) return;
+  if(e.target.checked) S.done[k]=true; else delete S.done[k];
+  update(); persist();
+});
+let noteTimer=null;
+document.addEventListener("input",e=>{
+  const n=e.target.dataset&&e.target.dataset.n; if(n===undefined) return;
+  S.notes[n]=e.target.value;
+  clearTimeout(noteTimer); noteTimer=setTimeout(persist,600);
+});
+
+render();
+
+/* ---------- account sync (optional) ---------- */
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use) return;
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user) return;
+    const uid=await user.id(); if(!uid) return;
+    const ref=db.doc("data/users/"+uid+"/progress");
+    const timer=setTimeout(()=>{syncEl.textContent="Couldn't reach your account yet. Progress is kept in this browser.";},10000);
+    const snap=await ref.get(); clearTimeout(timer);
+    if(snap.exists){
+      const d=snap.data()||{};
+      S={done:Object.assign({},S.done,d.done||{}),notes:Object.assign({},S.notes,d.notes||{})};
+      try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+      const openIds=[...document.querySelectorAll("details.ch[open]")].map(x=>x.id);
+      render();
+      openIds.forEach(id=>{const x=document.getElementById(id); if(x) x.open=true;});
+    }
+    dbRef=ref;
+    syncEl.textContent="Progress is saved to your account and follows you to other devices.";
+  }catch(e){ /* keep browser-only progress */ }
+})();
+</script>
