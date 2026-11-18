@@ -137,7 +137,6 @@ When I'm stuck, the Guide climbs a **hint ladder**: question → lens → analog
 
 | Path | Contents |
 |---|---|
-| [`system design learning.pdf`](system%20design%20learning.pdf) | Where it began: research on fivenines.dev, free alternatives, and the first draft plan |
 | [`_bmad-output/party-mode/architects-road.html`](_bmad-output/party-mode/architects-road.html) | The full 25-week map with every link, mission and boss |
 | [`.claude/skills/teach-me-system-design/`](.claude/skills/teach-me-system-design/) | The Guide: curriculum, story world, lesson flow, boss review |
 | `_bmad-output/system-design-quest/` | My progress, field logs and the running chronicle *(created on the road)* |
