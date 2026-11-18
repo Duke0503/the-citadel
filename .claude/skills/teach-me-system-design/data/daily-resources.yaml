@@ -1,0 +1,150 @@
+# Daily resources per week: YouTube (channel search links) + GitHub repos to study.
+# All links checked 2026-11-18. Day plan: Mon read[0] | Tue rest of read + youtube[0] | Wed watch + youtube[1:] | Thu build (first half) + github | Fri build (second half), break + measure | Weekend sandbox + boss.
+weeks:
+  0:
+    youtube:
+      - {title: "TechWorld with Nana: docker tutorial", url: "https://www.youtube.com/@TechWorldwithNana/search?query=docker%20tutorial"}
+    github:
+      - {title: "docker/awesome-compose: ready-made compose examples", url: "https://github.com/docker/awesome-compose"}
+  1:
+    youtube:
+      - {title: "Hussein Nasser: TCP", url: "https://www.youtube.com/@hnasr/search?query=TCP"}
+      - {title: "ByteByteGo: what happens when you type a URL", url: "https://www.youtube.com/@ByteByteGo/search?query=what%20happens%20when%20you%20type%20a%20URL"}
+    github:
+      - {title: "system-design-101 (visual explainers)", url: "https://github.com/ByteByteGoHq/system-design-101"}
+  2:
+    youtube:
+      - {title: "Hussein Nasser: DNS", url: "https://www.youtube.com/@hnasr/search?query=DNS"}
+      - {title: "ByteByteGo: DNS", url: "https://www.youtube.com/@ByteByteGo/search?query=DNS"}
+    github:
+      - {title: "system-design-101 (visual explainers)", url: "https://github.com/ByteByteGoHq/system-design-101"}
+  3:
+    youtube:
+      - {title: "Hussein Nasser: HTTP/2", url: "https://www.youtube.com/@hnasr/search?query=HTTP/2"}
+      - {title: "ByteByteGo: gRPC", url: "https://www.youtube.com/@ByteByteGo/search?query=gRPC"}
+    github:
+      - {title: "grpc/grpc: examples for every language", url: "https://github.com/grpc/grpc"}
+  4:
+    youtube:
+      - {title: "ByteByteGo: load balancer", url: "https://www.youtube.com/@ByteByteGo/search?query=load%20balancer"}
+      - {title: "Hussein Nasser: load balancing", url: "https://www.youtube.com/@hnasr/search?query=load%20balancing"}
+    github:
+      - {title: "grafana/k6: load testing tool", url: "https://github.com/grafana/k6"}
+      - {title: "docker/awesome-compose", url: "https://github.com/docker/awesome-compose"}
+  5:
+    youtube:
+      - {title: "ByteByteGo: cache", url: "https://www.youtube.com/@ByteByteGo/search?query=cache"}
+      - {title: "Hussein Nasser: redis", url: "https://www.youtube.com/@hnasr/search?query=redis"}
+    github:
+      - {title: "karanpratapsingh/system-design (caching chapter)", url: "https://github.com/karanpratapsingh/system-design"}
+  6:
+    youtube:
+      - {title: "Hussein Nasser: database index", url: "https://www.youtube.com/@hnasr/search?query=database%20index"}
+      - {title: "ByteByteGo: database index", url: "https://www.youtube.com/@ByteByteGo/search?query=database%20index"}
+    github:
+      - {title: "karanpratapsingh/system-design (databases)", url: "https://github.com/karanpratapsingh/system-design"}
+  7:
+    youtube:
+      - {title: "Hussein Nasser: replication", url: "https://www.youtube.com/@hnasr/search?query=replication"}
+      - {title: "ByteByteGo: sharding", url: "https://www.youtube.com/@ByteByteGo/search?query=sharding"}
+    github:
+      - {title: "karanpratapsingh/system-design (replication, sharding)", url: "https://github.com/karanpratapsingh/system-design"}
+  8:
+    youtube:
+      - {title: "ByteByteGo: kafka", url: "https://www.youtube.com/@ByteByteGo/search?query=kafka"}
+      - {title: "Confluent: kafka 101", url: "https://www.youtube.com/@Confluent/search?query=kafka%20101"}
+    github:
+      - {title: "confluentinc/cp-all-in-one: Kafka compose files", url: "https://github.com/confluentinc/cp-all-in-one"}
+      - {title: "kafbat/kafka-ui", url: "https://github.com/kafbat/kafka-ui"}
+  9:
+    youtube:
+      - {title: "Confluent: consumer group", url: "https://www.youtube.com/@Confluent/search?query=consumer%20group"}
+      - {title: "Hussein Nasser: kafka", url: "https://www.youtube.com/@hnasr/search?query=kafka"}
+    github:
+      - {title: "confluentinc/cp-all-in-one", url: "https://github.com/confluentinc/cp-all-in-one"}
+  10:
+    youtube:
+      - {title: "MIT 6.824 Raft lecture (search): MIT 6.824 raft lecture", url: "https://www.youtube.com/results?search_query=MIT+6.824+raft+lecture"}
+      - {title: "ByteByteGo: raft", url: "https://www.youtube.com/@ByteByteGo/search?query=raft"}
+    github:
+      - {title: "etcd-io/etcd", url: "https://github.com/etcd-io/etcd"}
+      - {title: "MIT 6.5840 Distributed Systems course (labs)", url: "https://pdos.csail.mit.edu/6.824/"}
+  11:
+    youtube:
+      - {title: "ByteByteGo: circuit breaker", url: "https://www.youtube.com/@ByteByteGo/search?query=circuit%20breaker"}
+      - {title: "Gaurav Sen: rate limiting", url: "https://www.youtube.com/@gkcs/search?query=rate%20limiting"}
+    github:
+      - {title: "Shopify/toxiproxy", url: "https://github.com/Shopify/toxiproxy"}
+      - {title: "resilience4j (study the patterns)", url: "https://github.com/resilience4j/resilience4j"}
+  12:
+    youtube:
+      - {title: "TechWorld with Nana: prometheus", url: "https://www.youtube.com/@TechWorldwithNana/search?query=prometheus"}
+      - {title: "ByteByteGo: observability", url: "https://www.youtube.com/@ByteByteGo/search?query=observability"}
+    github:
+      - {title: "prometheus/prometheus", url: "https://github.com/prometheus/prometheus"}
+  13:
+    youtube:
+      - {title: "ByteByteGo (watch AFTER your design): url shortener", url: "https://www.youtube.com/@ByteByteGo/search?query=url%20shortener"}
+    github:
+      - {title: "ashishps1/awesome-system-design-resources", url: "https://github.com/ashishps1/awesome-system-design-resources"}
+  14:
+    youtube:
+      - {title: "Gaurav Sen (watch AFTER your design): whatsapp", url: "https://www.youtube.com/@gkcs/search?query=whatsapp"}
+      - {title: "ByteByteGo (watch AFTER your design): chat", url: "https://www.youtube.com/@ByteByteGo/search?query=chat"}
+    github:
+      - {title: "binhnguyennus/awesome-scalability", url: "https://github.com/binhnguyennus/awesome-scalability"}
+  15:
+    youtube:
+      - {title: "ByteByteGo (watch AFTER your design): news feed", url: "https://www.youtube.com/@ByteByteGo/search?query=news%20feed"}
+    github:
+      - {title: "binhnguyennus/awesome-scalability", url: "https://github.com/binhnguyennus/awesome-scalability"}
+  16:
+    youtube:
+      - {title: "ByteByteGo: API design", url: "https://www.youtube.com/@ByteByteGo/search?query=API%20design"}
+      - {title: "Hussein Nasser: idempotency", url: "https://www.youtube.com/@hnasr/search?query=idempotency"}
+    github:
+      - {title: "microsoft/api-guidelines", url: "https://github.com/microsoft/api-guidelines"}
+      - {title: "zalando/restful-api-guidelines", url: "https://github.com/zalando/restful-api-guidelines"}
+  17:
+    youtube:
+      - {title: "ByteByteGo: CDN", url: "https://www.youtube.com/@ByteByteGo/search?query=CDN"}
+      - {title: "ByteByteGo: search", url: "https://www.youtube.com/@ByteByteGo/search?query=search"}
+    github:
+      - {title: "minio/minio", url: "https://github.com/minio/minio"}
+      - {title: "meilisearch/meilisearch", url: "https://github.com/meilisearch/meilisearch"}
+  18:
+    youtube:
+      - {title: "ByteByteGo: OAuth", url: "https://www.youtube.com/@ByteByteGo/search?query=OAuth"}
+      - {title: "Hussein Nasser: JWT", url: "https://www.youtube.com/@hnasr/search?query=JWT"}
+    github:
+      - {title: "OWASP Cheat Sheet Series", url: "https://github.com/OWASP/CheatSheetSeries"}
+      - {title: "OWASP Juice Shop (a legal practice target)", url: "https://github.com/juice-shop/juice-shop"}
+  19:
+    youtube:
+      - {title: "ByteByteGo: saga", url: "https://www.youtube.com/@ByteByteGo/search?query=saga"}
+      - {title: "ByteByteGo: CQRS", url: "https://www.youtube.com/@ByteByteGo/search?query=CQRS"}
+    github:
+      - {title: "microservices-patterns/ftgo-application", url: "https://github.com/microservices-patterns/ftgo-application"}
+  20:
+    youtube: []
+    github:
+      - {title: "pshenok/server-survival (open source)", url: "https://github.com/pshenok/server-survival"}
+  21:
+    youtube:
+      - {title: "Queueing theory and Little's Law (search): queueing theory little's law explained", url: "https://www.youtube.com/results?search_query=queueing+theory+little%27s+law+explained"}
+    github: []
+  22:
+    youtube:
+      - {title: "Discrete-event simulation (search): discrete event simulation explained", url: "https://www.youtube.com/results?search_query=discrete+event+simulation+explained"}
+    github:
+      - {title: "codecrafters-io/build-your-own-x", url: "https://github.com/codecrafters-io/build-your-own-x"}
+  23:
+    youtube:
+      - {title: "Architecture decision records (search): architecture decision records", url: "https://www.youtube.com/results?search_query=architecture+decision+records"}
+    github:
+      - {title: "joelparkerhenderson/architecture-decision-record", url: "https://github.com/joelparkerhenderson/architecture-decision-record"}
+      - {title: "albedoweb/system-design-game", url: "https://github.com/albedoweb/system-design-game"}
+      - {title: "vijaygupta18/system-design-simulator", url: "https://github.com/vijaygupta18/system-design-simulator"}
+  24:
+    youtube: []
+    github: []

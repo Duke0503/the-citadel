@@ -30,7 +30,9 @@ Go through `concepts` one at a time. For each concept:
 2. **Build on their answer:** take what's right, then add the missing piece in ≤6 lines. Use a diagram in a code block if it helps (ASCII boxes and arrows).
 3. **Explain-back:** "Say it back to me in one sentence." (See `teaching-rules.md`.)
 
-Then hand them the `read` list as **targeted reading**: "Read X looking for the answer to *this specific question*." Never say "read this" without a question to read for.
+Then hand them the `read` list as **targeted reading**: "Read X looking for the answer to *this specific question*." Never say "read this" without a question to read for. Add the week's first `youtube` item from `data/daily-resources.yaml` the same way ("Watch for the moment they explain ___"). Give the `github` repos with the Build Mission as *reference to study*, not code to copy: "Open this repo and find how they ___; then write yours."
+
+Follow the day plan when the learner asks "what do I do today?": Mon read[0] · Tue rest of read + youtube[0] · Wed watch + youtube[1:] · Thu first half of build + github · Fri second half of build, break + measure · Weekend sandbox + boss.
 
 ## Beat 4 · The Watch Mission
 

@@ -7,15 +7,15 @@
 /* Layout: a single expedition column; a route strip of acts, then chapter cards (one per week) that open into a five-part week. */
 :root{
   --paper:#eef2f6; --sheet:#ffffff; --ink:#18243a; --muted:#5b6880; --line:#cfd8e4;
-  --route:#1f4e8c; --fire:#c2670f; --fire-soft:#fbe9d6; --done:#2f7d4f; --done-soft:#e1f1e7;
+  --route:#1f4e8c; --fire:#c2670f; --fire-soft:#fbe9d6; --done:#2f7d4f; --done-soft:#e1f1e7; --yt:#c0392b;
   --display:"Alegreya SC", Georgia, serif; --body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
-  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; color-scheme:dark}}
+  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
-  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; color-scheme:dark}
+  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
 .wrap{max-width:880px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:28px}
@@ -83,6 +83,8 @@ summary::-webkit-details-marker{display:none}
 .task label{cursor:pointer;min-width:0;overflow-wrap:anywhere}
 .task input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
 .na{color:var(--muted);font-size:.92rem}
+.kd{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;margin-right:7px;vertical-align:1px;border:1px solid currentColor}
+.k-read{color:var(--route)}.k-yt{color:var(--yt)}.k-viz{color:var(--fire)}.k-gh{color:var(--ink)}.k-lab{color:var(--done)}.k-boss{color:var(--fire);background:var(--fire-soft)}
 .tag{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:1px 7px;border-radius:99px;background:var(--done-soft);color:var(--done);margin-left:6px;vertical-align:2px}
 .scroll{display:flex;flex-direction:column;gap:6px}
 .scroll label{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fire)}
@@ -117,9 +119,9 @@ pre.tpl{font-family:var(--mono);font-size:.8rem;background:var(--paper);border:1
     <div class="panel">
       <h3>Every week</h3>
       <ul class="rhythm">
-        <li><b>Mon – Tue</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Read</b> the theory (30–45 min a day)</span></li>
+        <li><b>Mon – Tue</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Read</b> the theory and watch one video (30–45 min a day)</span></li>
         <li><b>Wed</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Watch</b> it run in a visualizer</span></li>
-        <li><b>Thu – Fri</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Build</b> it for real in the Citadel</span></li>
+        <li><b>Thu – Fri</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Build</b> it with a reference repo, then break it</span></li>
         <li><b>Weekend</b><span>Face the <b style="color:var(--ink);font-family:var(--body);font-size:1em">Boss</b>, write the journal</span></li>
       </ul>
     </div>
@@ -159,7 +161,7 @@ Reality:        what the Citadel showed (numbers, screenshot)
 The gap:        the real lesson
 The battle:     my defense, and what the masters did that I didn't
 Still in fog:   what I don't get yet</pre>
-    <p>Links were collected from memory. If one has moved, search the title. The Citadel is your own repo with one <code>docker-compose.yml</code> that grows each week. Write your app in whichever language you use every day.</p>
+    <p>All links were checked on 18 Nov 2026. YouTube links open a search inside the channel, so you always land on that channel's current videos for the topic. The Citadel is your own repo with one <code>docker-compose.yml</code> that grows each week. Write your app in whichever language you use every day.</p>
     <p>Act V is about building <b>your own original</b> simulator. Study other products as a user and from open-source code whose license allows it. Do not copy anyone's lessons, art or code.</p>
   </footer>
 </div>
@@ -345,7 +347,7 @@ const W=[
   loot:"A product vision that is yours."},
  {w:21,act:"forge",t:"The Mathematics of Waiting",sub:"Queueing theory",sd:0,
   q:"Every line at every gate obeys the same law. Learn it, and you can predict the crowd.",
-  read:[L("samwho.dev: the queueing article","https://samwho.dev/"),L("Little's Law","https://en.wikipedia.org/wiki/Little%27s_law")],
+  read:[L("Sam Rose: Queueing, an interactive study","https://encore.dev/blog/queueing"),L("Little's Law","https://en.wikipedia.org/wiki/Little%27s_law")],
   watch:[],
   build:["In your language, simulate one server with random arrivals","Plot latency against utilization; compare with your week 4 k6 numbers"],
   boss:"Explain why latency explodes once utilization goes past about 80%.",
@@ -379,6 +381,8 @@ const W=[
 
 const FOES=["The Rust","The Long Silence","The Lost Courier","The Babel Wind","The Slow Gate","The Stampede","The Endless Scroll","The Laggard Twin","The Tangled Post","The Backlog Beast","The Split Crown","The Echo Storm","The Fog","The Billion Doors","The Sleeping Friend","The Celebrity's Voice","The Broken Treaty","The Far Mountain","The Thief in Gray","The Wide Ocean","The Mirror","The Crowd at the Gate","The Clockwork Ghost","The Labyrinth","The Blank Page"];
 
+const XT=[{"yt":[{"t":"TechWorld with Nana: docker tutorial","u":"https://www.youtube.com/@TechWorldwithNana/search?query=docker%20tutorial"}],"gh":[{"t":"docker/awesome-compose: ready-made compose examples","u":"https://github.com/docker/awesome-compose"}]},{"yt":[{"t":"Hussein Nasser: TCP","u":"https://www.youtube.com/@hnasr/search?query=TCP"},{"t":"ByteByteGo: what happens when you type a URL","u":"https://www.youtube.com/@ByteByteGo/search?query=what%20happens%20when%20you%20type%20a%20URL"}],"gh":[{"t":"system-design-101 (visual explainers)","u":"https://github.com/ByteByteGoHq/system-design-101"}]},{"yt":[{"t":"Hussein Nasser: DNS","u":"https://www.youtube.com/@hnasr/search?query=DNS"},{"t":"ByteByteGo: DNS","u":"https://www.youtube.com/@ByteByteGo/search?query=DNS"}],"gh":[{"t":"system-design-101 (visual explainers)","u":"https://github.com/ByteByteGoHq/system-design-101"}]},{"yt":[{"t":"Hussein Nasser: HTTP/2","u":"https://www.youtube.com/@hnasr/search?query=HTTP/2"},{"t":"ByteByteGo: gRPC","u":"https://www.youtube.com/@ByteByteGo/search?query=gRPC"}],"gh":[{"t":"grpc/grpc: examples for every language","u":"https://github.com/grpc/grpc"}]},{"yt":[{"t":"ByteByteGo: load balancer","u":"https://www.youtube.com/@ByteByteGo/search?query=load%20balancer"},{"t":"Hussein Nasser: load balancing","u":"https://www.youtube.com/@hnasr/search?query=load%20balancing"}],"gh":[{"t":"grafana/k6: load testing tool","u":"https://github.com/grafana/k6"},{"t":"docker/awesome-compose","u":"https://github.com/docker/awesome-compose"}]},{"yt":[{"t":"ByteByteGo: cache","u":"https://www.youtube.com/@ByteByteGo/search?query=cache"},{"t":"Hussein Nasser: redis","u":"https://www.youtube.com/@hnasr/search?query=redis"}],"gh":[{"t":"karanpratapsingh/system-design (caching chapter)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"Hussein Nasser: database index","u":"https://www.youtube.com/@hnasr/search?query=database%20index"},{"t":"ByteByteGo: database index","u":"https://www.youtube.com/@ByteByteGo/search?query=database%20index"}],"gh":[{"t":"karanpratapsingh/system-design (databases)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"Hussein Nasser: replication","u":"https://www.youtube.com/@hnasr/search?query=replication"},{"t":"ByteByteGo: sharding","u":"https://www.youtube.com/@ByteByteGo/search?query=sharding"}],"gh":[{"t":"karanpratapsingh/system-design (replication, sharding)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"ByteByteGo: kafka","u":"https://www.youtube.com/@ByteByteGo/search?query=kafka"},{"t":"Confluent: kafka 101","u":"https://www.youtube.com/@Confluent/search?query=kafka%20101"}],"gh":[{"t":"confluentinc/cp-all-in-one: Kafka compose files","u":"https://github.com/confluentinc/cp-all-in-one"},{"t":"kafbat/kafka-ui","u":"https://github.com/kafbat/kafka-ui"}]},{"yt":[{"t":"Confluent: consumer group","u":"https://www.youtube.com/@Confluent/search?query=consumer%20group"},{"t":"Hussein Nasser: kafka","u":"https://www.youtube.com/@hnasr/search?query=kafka"}],"gh":[{"t":"confluentinc/cp-all-in-one","u":"https://github.com/confluentinc/cp-all-in-one"}]},{"yt":[{"t":"MIT 6.824 Raft lecture (search)","u":"https://www.youtube.com/results?search_query=MIT+6.824+raft+lecture"},{"t":"ByteByteGo: raft","u":"https://www.youtube.com/@ByteByteGo/search?query=raft"}],"gh":[{"t":"etcd-io/etcd","u":"https://github.com/etcd-io/etcd"},{"t":"MIT 6.5840 Distributed Systems course (labs)","u":"https://pdos.csail.mit.edu/6.824/"}]},{"yt":[{"t":"ByteByteGo: circuit breaker","u":"https://www.youtube.com/@ByteByteGo/search?query=circuit%20breaker"},{"t":"Gaurav Sen: rate limiting","u":"https://www.youtube.com/@gkcs/search?query=rate%20limiting"}],"gh":[{"t":"Shopify/toxiproxy","u":"https://github.com/Shopify/toxiproxy"},{"t":"resilience4j (study the patterns)","u":"https://github.com/resilience4j/resilience4j"}]},{"yt":[{"t":"TechWorld with Nana: prometheus","u":"https://www.youtube.com/@TechWorldwithNana/search?query=prometheus"},{"t":"ByteByteGo: observability","u":"https://www.youtube.com/@ByteByteGo/search?query=observability"}],"gh":[{"t":"prometheus/prometheus","u":"https://github.com/prometheus/prometheus"}]},{"yt":[{"t":"ByteByteGo (watch AFTER your design): url shortener","u":"https://www.youtube.com/@ByteByteGo/search?query=url%20shortener"}],"gh":[{"t":"ashishps1/awesome-system-design-resources","u":"https://github.com/ashishps1/awesome-system-design-resources"}]},{"yt":[{"t":"Gaurav Sen (watch AFTER your design): whatsapp","u":"https://www.youtube.com/@gkcs/search?query=whatsapp"},{"t":"ByteByteGo (watch AFTER your design): chat","u":"https://www.youtube.com/@ByteByteGo/search?query=chat"}],"gh":[{"t":"binhnguyennus/awesome-scalability","u":"https://github.com/binhnguyennus/awesome-scalability"}]},{"yt":[{"t":"ByteByteGo (watch AFTER your design): news feed","u":"https://www.youtube.com/@ByteByteGo/search?query=news%20feed"}],"gh":[{"t":"binhnguyennus/awesome-scalability","u":"https://github.com/binhnguyennus/awesome-scalability"}]},{"yt":[{"t":"ByteByteGo: API design","u":"https://www.youtube.com/@ByteByteGo/search?query=API%20design"},{"t":"Hussein Nasser: idempotency","u":"https://www.youtube.com/@hnasr/search?query=idempotency"}],"gh":[{"t":"microsoft/api-guidelines","u":"https://github.com/microsoft/api-guidelines"},{"t":"zalando/restful-api-guidelines","u":"https://github.com/zalando/restful-api-guidelines"}]},{"yt":[{"t":"ByteByteGo: CDN","u":"https://www.youtube.com/@ByteByteGo/search?query=CDN"},{"t":"ByteByteGo: search","u":"https://www.youtube.com/@ByteByteGo/search?query=search"}],"gh":[{"t":"minio/minio","u":"https://github.com/minio/minio"},{"t":"meilisearch/meilisearch","u":"https://github.com/meilisearch/meilisearch"}]},{"yt":[{"t":"ByteByteGo: OAuth","u":"https://www.youtube.com/@ByteByteGo/search?query=OAuth"},{"t":"Hussein Nasser: JWT","u":"https://www.youtube.com/@hnasr/search?query=JWT"}],"gh":[{"t":"OWASP Cheat Sheet Series","u":"https://github.com/OWASP/CheatSheetSeries"},{"t":"OWASP Juice Shop (a legal practice target)","u":"https://github.com/juice-shop/juice-shop"}]},{"yt":[{"t":"ByteByteGo: saga","u":"https://www.youtube.com/@ByteByteGo/search?query=saga"},{"t":"ByteByteGo: CQRS","u":"https://www.youtube.com/@ByteByteGo/search?query=CQRS"}],"gh":[{"t":"microservices-patterns/ftgo-application","u":"https://github.com/microservices-patterns/ftgo-application"}]},{"yt":[],"gh":[{"t":"pshenok/server-survival (open source)","u":"https://github.com/pshenok/server-survival"}]},{"yt":[{"t":"Queueing theory and Little's Law (search)","u":"https://www.youtube.com/results?search_query=queueing+theory+little%27s+law+explained"}],"gh":[]},{"yt":[{"t":"Discrete-event simulation (search)","u":"https://www.youtube.com/results?search_query=discrete+event+simulation+explained"}],"gh":[{"t":"codecrafters-io/build-your-own-x","u":"https://github.com/codecrafters-io/build-your-own-x"}]},{"yt":[{"t":"Architecture decision records (search)","u":"https://www.youtube.com/results?search_query=architecture+decision+records"}],"gh":[{"t":"joelparkerhenderson/architecture-decision-record","u":"https://github.com/joelparkerhenderson/architecture-decision-record"},{"t":"albedoweb/system-design-game","u":"https://github.com/albedoweb/system-design-game"},{"t":"vijaygupta18/system-design-simulator","u":"https://github.com/vijaygupta18/system-design-simulator"}]},{"yt":[],"gh":[]}];
+
 /* ---------- state ---------- */
 const KEY="architects-road-v1";
 let S={done:{},notes:{}};
@@ -407,6 +411,8 @@ const tasksOf=w=>{
   w.read.forEach((_,i)=>k.push(w.w+"-r"+i));
   w.watch.forEach((_,i)=>k.push(w.w+"-w"+i));
   w.build.forEach((_,i)=>k.push(w.w+"-b"+i));
+  XT[w.w].yt.forEach((_,i)=>k.push(w.w+"-y"+i));
+  XT[w.w].gh.forEach((_,i)=>k.push(w.w+"-g"+i));
   if(w.sd) k.push(w.w+"-sd");
   k.push(w.w+"-boss");
   return k;
@@ -421,12 +427,25 @@ function link(l){return `<a href="${l.u}" target="_blank" rel="noopener">${l.t}<
 
 function chapter(w){
   const parts=[];
-  parts.push(`<div class="part"><b>Read</b>${w.read.length?`<ul>${w.read.map((l,i)=>task(w.w+"-r"+i,link(l))).join("")}</ul>`:`<span class="na">No reading this week, only building.</span>`}</div>`);
-  parts.push(`<div class="part"><b>Watch</b>${w.watch.length?`<ul>${w.watch.map((l,i)=>task(w.w+"-w"+i,link(l))).join("")}</ul>`:`<span class="na">No visualizer for this one. Your own Citadel is the view.</span>`}</div>`);
-  const b=w.build.map((t,i)=>task(w.w+"-b"+i,t));
-  if(w.sd) b.push(task(w.w+"-sd",`Weekend sandbox: rebuild this week's piece in <a href="https://systemdesigner.io/" target="_blank" rel="noopener">systemdesigner.io</a><span class="tag">simulator</span>`));
-  parts.push(`<div class="part"><b>Build</b><ul>${b.join("")}</ul></div>`);
-  parts.push(`<div class="part"><b>Boss</b><ul>${task(w.w+"-boss",`<strong>${FOES[w.w]}</strong> attacks. ${w.boss}`)}</ul></div>`);
+  const X=XT[w.w], kind=(t,c,html)=>`<span class="kd ${c}">${t}</span>${html}`;
+  const R=w.read.map((l,i)=>task(w.w+"-r"+i,kind("Read","k-read",link(l))));
+  const Y=X.yt.map((l,i)=>task(w.w+"-y"+i,kind("YouTube","k-yt",link(l))));
+  const V=w.watch.map((l,i)=>task(w.w+"-w"+i,kind("Visualize","k-viz",link(l))));
+  const G=X.gh.map((l,i)=>task(w.w+"-g"+i,kind("GitHub","k-gh",link(l))));
+  const B=w.build.map((t,i)=>task(w.w+"-b"+i,kind("Lab","k-lab",t)));
+  const half=Math.ceil(B.length/2);
+  const days=[
+    ["Mon","Read",R.slice(0,1),"No reading today. Catch up on last week, or rest."],
+    ["Tue","Read + video",R.slice(1).concat(Y.slice(0,1)),"Re-read Monday's piece and write 5 lines in your own words."],
+    ["Wed","Watch it run",V.concat(Y.slice(1)),"No visualizer this week. Your own Citadel is the view."],
+    ["Thu","Build",B.slice(0,half).concat(G),"Sketch your design on paper before you write any code."],
+    ["Fri","Break + measure",B.slice(half),"Polish Thursday's work and write down the numbers you measured."]
+  ];
+  days.forEach(([d,label,items,empty])=>parts.push(`<div class="part"><b>${d} · ${label}</b>${items.length?`<ul>${items.join("")}</ul>`:`<span class="na">${empty}</span>`}</div>`));
+  const wk=[];
+  if(w.sd) wk.push(task(w.w+"-sd",kind("Simulator","k-viz",`Rebuild this week's piece in <a href="https://systemdesigner.io/" target="_blank" rel="noopener">systemdesigner.io</a> and push traffic until it breaks`)));
+  wk.push(task(w.w+"-boss",kind("Boss","k-boss",`<strong>${FOES[w.w]}</strong> attacks. ${w.boss}`)));
+  parts.push(`<div class="part"><b>Weekend · Battle</b><ul>${wk.join("")}</ul></div>`);
   return `<details class="ch" id="ch-${w.w}" data-w="${w.w}">
     <summary><div class="wk">Week<b>${w.w}</b></div><div class="ttl"><h3>${w.t}</h3><small>${w.sub} · Foe: ${FOES[w.w]}</small></div><div class="cnt" id="c-${w.w}"></div></summary>
     <div class="body">

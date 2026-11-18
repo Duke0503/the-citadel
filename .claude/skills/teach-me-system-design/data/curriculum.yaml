@@ -356,7 +356,7 @@ weeks:
     quest: Every line at every gate obeys the same law. Learn it and you can predict the crowd.
     concepts: [arrival rate and service rate, utilization, Little's Law, M/M/1 intuition, why latency explodes near saturation]
     read:
-      - [samwho.dev queueing article, https://samwho.dev/]
+      - [Sam Rose Queueing an interactive study, https://encore.dev/blog/queueing]
       - [Little's Law, https://en.wikipedia.org/wiki/Little%27s_law]
     watch: []
     build: [Simulate one server with random arrivals in your language, Plot latency vs utilization and compare with week 4]
