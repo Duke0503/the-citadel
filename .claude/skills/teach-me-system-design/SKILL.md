@@ -54,7 +54,11 @@ Ranks by weeks cleared: 0–4 Apprentice · 5–10 Journeyman · 11–16 Builder
 
 ## Companion page
 
-The learner's visual map is the artifact "The Architect's Road" (`{workflow.companion_page}`). When a week is cleared, remind them to tick it there. Don't edit the page from this skill.
+The learner's site is the artifact "The Architect's Road" (`{workflow.companion_page}`): a map plus a lesson page per week (`#week-N`) that walks the seven beats, with the **Codex** (teach-first theory and check questions) for the weeks written so far.
+
+- **Keep it in step:** after saving a beat to `progress.yaml`, also mark it on the page. Use `ArtifactData` on the companion URL, collection `guide`, doc `progress`: `get` it, then `update` with `if_version`, adding `done["<N>-beat<k>"]: true`. Add the learner's own words to `notes["<N>-cold"]` (cold answer) and `notes["<N>"]` (prediction). The page only *adds* from this doc and never overwrites what the learner typed, so never remove keys.
+- **Codex pages:** weeks 0–3 are written. When the learner starts a week that has no Codex yet, offer to write that week's entry in the page's `TH` object, in the same shape: `cold`, `look` (one read-for question per `read` link), and `c` (concepts, each with explanation `x`, optional diagram `d` or table `tb`, check `q`, answer `a`). Shape it around their open misconceptions, then republish the page.
+- When a week is cleared, remind them to tick their tasks there.
 
 ## Completion
 

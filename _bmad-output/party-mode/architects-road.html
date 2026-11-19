@@ -4,52 +4,63 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a single expedition column; a route strip of acts, then chapter cards (one per week) that open into a five-part week. */
+/* Layout: two views on one column. The map (acts → week cards) and a lesson page per week that walks the Guide's seven beats top to bottom. */
 :root{
   --paper:#eef2f6; --sheet:#ffffff; --ink:#18243a; --muted:#5b6880; --line:#cfd8e4;
-  --route:#1f4e8c; --fire:#c2670f; --fire-soft:#fbe9d6; --done:#2f7d4f; --done-soft:#e1f1e7; --yt:#c0392b;
+  --route:#1f4e8c; --route-soft:#e2ebf7; --fire:#c2670f; --fire-soft:#fbe9d6; --done:#2f7d4f; --done-soft:#e1f1e7; --yt:#c0392b;
   --display:"Alegreya SC", Georgia, serif; --body:"Alegreya Sans", "Segoe UI", system-ui, sans-serif; --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
-  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}}
+  --route:#7fb0f0; --route-soft:#1b2c48; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0f1726; --sheet:#16213a; --ink:#e4eaf4; --muted:#9aa8c0; --line:#2a3854;
-  --route:#7fb0f0; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}
+  --route:#7fb0f0; --route-soft:#1b2c48; --fire:#f0a24e; --fire-soft:#3a2a17; --done:#6cc792; --done-soft:#17321f; --yt:#ff7a6b; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
-.wrap{max-width:880px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:28px}
-h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
-h1{font-size:clamp(2.2rem,6vw,3.4rem);letter-spacing:.01em}
-h2{font-size:1.6rem}
+.wrap{max-width:880px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.view{display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2.1rem,6vw,3.3rem);letter-spacing:.01em}
+h2{font-size:1.55rem}
 h3{font-size:1.2rem}
+h4{font-size:1.08rem}
 p{margin:0}
 a{color:var(--route)}
-a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--fire);outline-offset:2px}
 code,.mono{font-family:var(--mono);font-size:.86em}
 .eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--fire)}
 .lede{font-size:1.15rem;color:var(--muted);max-width:62ch}
+.na{color:var(--muted);font-size:.92rem}
+button{font:inherit;cursor:pointer}
+.btn{font-family:var(--mono);font-size:.8rem;letter-spacing:.03em;border:1px solid var(--route);color:var(--route);background:var(--sheet);border-radius:7px;padding:7px 12px}
+.btn.primary{background:var(--route);color:var(--sheet)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.on{border-color:var(--done);color:var(--done);background:var(--done-soft)}
 
-/* hero */
+/* status */
 .hero{display:flex;flex-direction:column;gap:14px}
-.status{display:grid;grid-template-columns:1fr auto;gap:8px 16px;align-items:end;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px}
+.status{display:grid;grid-template-columns:1fr auto;gap:10px 16px;align-items:center;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px}
 .rank{font-family:var(--display);font-size:1.35rem}
-.rank small{display:block;font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.pct{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted)}
+.rank small,.next small{display:block;font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.pct{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);text-align:right}
 .bar{grid-column:1/-1;height:10px;border-radius:5px;background:var(--line);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--route),var(--fire));transition:width .5s}
+.next{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;border-top:1px dashed var(--line);padding-top:12px}
+.next span{font-size:1.02rem}
 .sync{grid-column:1/-1;font-size:.82rem;color:var(--muted)}
 
-/* rhythm + oaths */
+/* panels */
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .panel{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .rhythm{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
 .rhythm li{display:grid;grid-template-columns:7.5em 1fr;gap:8px}
 .rhythm b{font-family:var(--mono);font-size:.8rem;font-weight:500;color:var(--fire);padding-top:3px}
+.rhythm strong{font-weight:700}
 .oaths{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
 
 /* route */
-.route{display:flex;gap:0;overflow-x:auto;padding:4px 2px 8px}
+.route{display:flex;overflow-x:auto;padding:4px 2px 8px}
 .stop{flex:1 0 118px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;position:relative;text-decoration:none;color:var(--ink);padding:0 4px}
 .stop::before{content:"";position:absolute;top:15px;left:-50%;width:100%;height:2px;background:repeating-linear-gradient(90deg,var(--route) 0 6px,transparent 6px 11px);z-index:0}
 .stop:first-child::before{display:none}
@@ -58,71 +69,121 @@ code,.mono{font-family:var(--mono);font-size:.86em}
 .stop span{font-family:var(--display);font-size:.95rem;line-height:1.2}
 .stop em{font-style:normal;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
 
-/* acts & chapters */
-.act{display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+/* acts & week cards */
+.acts{display:flex;flex-direction:column;gap:36px}
+.act{display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
 .act-head{display:flex;flex-direction:column;gap:4px;border-top:2px solid var(--route);padding-top:14px}
 .act-head p{color:var(--muted);max-width:64ch}
-details.ch{background:var(--sheet);border:1px solid var(--line);border-radius:10px}
-details.ch[open]{border-color:var(--route)}
-details.ch.complete{border-left:5px solid var(--done)}
-summary{cursor:pointer;list-style:none;padding:14px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
-summary::-webkit-details-marker{display:none}
+.card{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px 16px;color:var(--ink);text-decoration:none}
+.card:hover{border-color:var(--route)}
+.card.cleared{border-left:5px solid var(--done)}
+.card.current{border-color:var(--fire);box-shadow:0 0 0 1px var(--fire)}
 .wk{font-family:var(--mono);font-size:.75rem;color:var(--muted);text-align:center;min-width:3.2em;line-height:1.1}
 .wk b{display:block;font-size:1.15rem;color:var(--ink);font-family:var(--display)}
 .ttl{min-width:0}
 .ttl small{display:block;color:var(--muted);font-size:.9rem}
-.cnt{font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
-.complete .cnt{color:var(--done)}
-.body{padding:0 16px 18px;display:flex;flex-direction:column;gap:14px}
+.meta{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.pips{display:flex;gap:4px}
+.pips i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line)}
+.pips i.d{background:var(--done);border-color:var(--done)}
+.pips i.c{border-color:var(--fire);background:var(--fire-soft)}
+.cnt{font-family:var(--mono);font-size:.74rem;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.cleared .cnt{color:var(--done)}
+.has-codex{font-family:var(--mono);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--route);border:1px solid currentColor;border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:2px}
+
+/* lesson */
+.crumbs{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:.82rem}
+.crumbs a{text-decoration:none}
+.lhead{display:flex;flex-direction:column;gap:8px}
+.lhead .foe{font-family:var(--mono);font-size:.8rem;color:var(--fire)}
 .quest{font-style:italic;background:var(--fire-soft);border-radius:8px;padding:10px 14px}
-.part{display:grid;grid-template-columns:8.5em 1fr;gap:10px;min-width:0}
-.part > b{font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--route);padding-top:4px}
-.part ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.dayplan{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.beats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--paper);padding-block:8px}
+.beats a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--muted);font-size:.74rem;text-align:center;line-height:1.15}
+.beats a b{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-family:var(--display);font-size:.88rem;background:var(--sheet);color:var(--ink)}
+.beats a.d b{background:var(--done);border-color:var(--done);color:var(--sheet)}
+.beats a.c b{border-color:var(--fire);background:var(--fire-soft)}
+.beats a.c{color:var(--ink)}
+.beat{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;scroll-margin-top:84px;min-width:0}
+.beat.cur{border-color:var(--fire)}
+.beat.ok{border-left:5px solid var(--done)}
+.bhead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.bhead h3 span{font-family:var(--mono);font-size:.8rem;color:var(--fire);margin-right:8px;font-weight:500}
+.prompt{font-size:1.05rem}
+textarea{width:100%;min-height:80px;resize:vertical;font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px}
+.lbl{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fire)}
+.field{display:flex;flex-direction:column;gap:6px}
+
+/* codex */
+.concept{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.concept:first-of-type{border-top:0;padding-top:0}
+.concept h4 span{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin-right:6px;font-weight:500}
+.concept.got h4::after{content:"understood";font-family:var(--mono);font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;color:var(--done);border:1px solid currentColor;border-radius:4px;padding:0 5px;margin-left:8px;vertical-align:3px}
+.explain{display:flex;flex-direction:column;gap:8px;max-width:68ch}
+.explain ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.dg{overflow-x:auto;background:var(--route-soft);border-radius:8px}
+.dg pre{font-family:var(--mono);font-size:.78rem;line-height:1.4;margin:0;padding:12px 14px;white-space:pre;color:var(--ink)}
+.tbl{overflow-x:auto}
+.tbl table{border-collapse:collapse;font-size:.92rem;min-width:420px}
+.tbl th,.tbl td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-family:var(--mono);font-size:.74rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.check{background:var(--paper);border:1px dashed var(--route);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.check .q{font-weight:700}
+.check .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.answer{border-left:3px solid var(--done);padding:4px 0 4px 12px;background:var(--done-soft);border-radius:0 6px 6px 0}
+.hint{font-size:.85rem;color:var(--muted)}
+.todo{background:var(--route-soft);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+
+/* tasks */
+.tasks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;min-width:0}
 .task{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start}
 .task input{width:18px;height:18px;margin:3px 0 0;accent-color:var(--done);cursor:pointer}
 .task label{cursor:pointer;min-width:0;overflow-wrap:anywhere}
 .task input:checked + label{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line)}
-.na{color:var(--muted);font-size:.92rem}
+.look{display:block;font-size:.88rem;color:var(--muted);font-style:italic}
 .kd{display:inline-block;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:4px;margin-right:7px;vertical-align:1px;border:1px solid currentColor}
 .k-read{color:var(--route)}.k-yt{color:var(--yt)}.k-viz{color:var(--fire)}.k-gh{color:var(--ink)}.k-lab{color:var(--done)}.k-boss{color:var(--fire);background:var(--fire-soft)}
-.tag{display:inline-block;font-family:var(--mono);font-size:.68rem;padding:1px 7px;border-radius:99px;background:var(--done-soft);color:var(--done);margin-left:6px;vertical-align:2px}
-.scroll{display:flex;flex-direction:column;gap:6px}
-.scroll label{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--fire)}
-.scroll textarea{width:100%;min-height:84px;resize:vertical;font:inherit;font-size:.95rem;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px}
-.loot{font-size:.92rem;color:var(--muted)}
-.loot b{color:var(--ink)}
+.day{font-family:var(--mono);font-size:.7rem;color:var(--muted);margin-right:6px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.then{background:var(--paper);border-radius:8px;padding:10px 12px;min-height:80px;white-space:pre-wrap;color:var(--muted)}
+.loot{font-size:.95rem}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .foot{color:var(--muted);font-size:.9rem;display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:16px}
-pre.tpl{font-family:var(--mono);font-size:.8rem;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0;overflow-x:auto;white-space:pre}
 
 @media (max-width:640px){
-  .two{grid-template-columns:1fr}
-  .part{grid-template-columns:1fr;gap:4px}
+  .two,.vs{grid-template-columns:1fr}
   .rhythm li{grid-template-columns:1fr;gap:0}
+  .card{grid-template-columns:auto 1fr}
+  .meta{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}
+  .beats a{font-size:0}
+  .beats a b{font-size:.88rem}
 }
-@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}html{scroll-behavior:auto}}
 </style>
 
 <div class="wrap">
+<div class="view" id="v-map">
   <header class="hero">
-    <div class="eyebrow">Field guide · 25 chapters · about 5 hours a week</div>
+    <div class="eyebrow">Field guide · 25 chapters · about 7 hours a week</div>
     <h1>The Architect's Road</h1>
-    <p class="lede">You start as an apprentice with an empty workshop. Each week you add one real piece to your own small city of servers (the <b>Citadel</b>), watch it work, break it on purpose, and repair it. By the end you can design systems from scratch and you have the skills to build your own simulator.</p>
+    <p class="lede">You start as an apprentice with an empty workshop. Each week you add one real piece to your own small city of servers (the <b>Citadel</b>), watch it work, break it on purpose, and repair it. By the end you can design systems from scratch and build your own simulator.</p>
     <div class="status" aria-live="polite">
       <div class="rank" id="rank"><small>Current rank</small>Apprentice</div>
-      <div class="pct" id="pct">0 / 0</div>
+      <div class="pct" id="pct">0 / 25 weeks</div>
       <div class="bar"><i id="barfill"></i></div>
+      <div class="next" id="next"></div>
       <div class="sync" id="sync">Progress is saved in this browser.</div>
     </div>
   </header>
 
   <section class="two">
     <div class="panel">
-      <h3>Every week</h3>
+      <h3>A week, in seven beats</h3>
       <ul class="rhythm">
-        <li><b>Mon – Tue</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Read</b> the theory and watch one video (30–45 min a day)</span></li>
-        <li><b>Wed</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Watch</b> it run in a visualizer</span></li>
-        <li><b>Thu – Fri</b><span><b style="color:var(--ink);font-family:var(--body);font-size:1em">Build</b> it with a reference repo, then break it</span></li>
-        <li><b>Weekend</b><span>Face the <b style="color:var(--ink);font-family:var(--body);font-size:1em">Boss</b>, write the journal</span></li>
+        <li><b>Mon – Tue</b><span><strong>Scene, Prediction, Codex.</strong> Commit to a guess, then learn the theory and read.</span></li>
+        <li><b>Wed</b><span><strong>Watch</strong> it run in a visualizer or step-through lesson.</span></li>
+        <li><b>Thu – Fri</b><span><strong>Build</strong> it in the Citadel, then break it and measure.</span></li>
+        <li><b>Weekend</b><span>Face the <strong>Boss</strong>, then the <strong>Debrief</strong> and field log.</span></li>
       </ul>
     </div>
     <div class="panel">
@@ -138,32 +199,24 @@ pre.tpl{font-family:var(--mono);font-size:.8rem;background:var(--paper);border:1
 
   <section class="panel">
     <h3>Your Guide</h3>
-    <p>An old architect who tells each lesson as a chapter of your story. Each week a named Foe attacks your Citadel. The Guide sets the scene, asks for your prediction, sends you on missions with real tools, then fights your design in the Boss battle. You'll get questions and hints, never finished answers. Call it in Claude Code:</p>
+    <p>This page holds the theory and your notes. The Guide in Claude Code runs the lesson with you: it sets the scene, checks your answers and fights your design in the Boss battle. When the Guide moves you forward a beat, this page follows.</p>
     <ul class="rhythm">
-      <li><b>Start / resume</b><span><code>/teach-me-system-design start week 0</code> or <code>continue</code></span></li>
+      <li><b>Start / resume</b><span><code>/teach-me-system-design continue</code></span></li>
       <li><b>Boss battle</b><span><code>/teach-me-system-design review my boss</code>, then paste your design</span></li>
       <li><b>Recall</b><span><code>/teach-me-system-design quiz me</code> on weeks you've cleared</span></li>
-      <li><b>Map</b><span><code>/teach-me-system-design where am I</code></span></li>
     </ul>
   </section>
 
   <nav class="route" id="route" aria-label="Acts"></nav>
-  <main id="acts" style="display:flex;flex-direction:column;gap:36px"></main>
+  <main class="acts" id="acts"></main>
 
   <footer class="foot">
-    <h3 style="color:var(--ink)">Field log template</h3>
-    <pre class="tpl"># Field Log: Week N, &lt;chapter&gt;   (Foe: &lt;name&gt;)
-&gt; 2–3 lines in your own voice: what the Citadel faced
-
-Cold question:  what I said then / what I'd say now
-Prediction:     what I thought would happen
-Reality:        what the Citadel showed (numbers, screenshot)
-The gap:        the real lesson
-The battle:     my defense, and what the masters did that I didn't
-Still in fog:   what I don't get yet</pre>
-    <p>All links were checked on 18 Nov 2026. YouTube links open a search inside the channel, so you always land on that channel's current videos for the topic. The Citadel is your own repo with one <code>docker-compose.yml</code> that grows each week. Write your app in whichever language you use every day.</p>
+    <p>All links were checked on 18–19 Nov 2026. YouTube links open a search inside the channel, so you land on that channel's current videos for the topic. Step-through lessons come from designed-to-scale.vercel.app.</p>
     <p>Act V is about building <b>your own original</b> simulator. Study other products as a user and from open-source code whose license allows it. Do not copy anyone's lessons, art or code.</p>
   </footer>
+</div>
+
+<div class="view" id="v-lesson" hidden></div>
 </div>
 
 <script>
@@ -383,19 +436,197 @@ const FOES=["The Rust","The Long Silence","The Lost Courier","The Babel Wind","T
 
 const DTS=[{"after": false, "l": []}, {"after": false, "l": [{"t": "How a Request Travels", "u": "https://designed-to-scale.vercel.app/#/request-lifecycle/1"}, {"t": "Latency & Throughput", "u": "https://designed-to-scale.vercel.app/#/latency-throughput/1"}, {"t": "Napkin Math", "u": "https://designed-to-scale.vercel.app/#/napkin-math/1"}]}, {"after": false, "l": []}, {"after": false, "l": [{"t": "REST, RPC & GraphQL", "u": "https://designed-to-scale.vercel.app/#/apis/1"}]}, {"after": false, "l": [{"t": "Vertical vs Horizontal Scaling", "u": "https://designed-to-scale.vercel.app/#/vertical-horizontal/1"}, {"t": "Load Balancing", "u": "https://designed-to-scale.vercel.app/#/load-balancing/1"}, {"t": "Stateless Services", "u": "https://designed-to-scale.vercel.app/#/stateless/1"}]}, {"after": false, "l": [{"t": "Caching", "u": "https://designed-to-scale.vercel.app/#/caching/1"}]}, {"after": false, "l": [{"t": "SQL vs NoSQL", "u": "https://designed-to-scale.vercel.app/#/sql-nosql/1"}, {"t": "Indexes", "u": "https://designed-to-scale.vercel.app/#/indexes/1"}, {"t": "Storage Engines", "u": "https://designed-to-scale.vercel.app/#/storage-engines/1"}]}, {"after": false, "l": [{"t": "Replication", "u": "https://designed-to-scale.vercel.app/#/replication/1"}, {"t": "Sharding", "u": "https://designed-to-scale.vercel.app/#/sharding/1"}, {"t": "Consistent Hashing", "u": "https://designed-to-scale.vercel.app/#/consistent-hashing/1"}]}, {"after": false, "l": [{"t": "Message Queues", "u": "https://designed-to-scale.vercel.app/#/queues/1"}, {"t": "Pub/Sub & Events", "u": "https://designed-to-scale.vercel.app/#/pubsub/1"}]}, {"after": false, "l": [{"t": "Batch & Stream Processing", "u": "https://designed-to-scale.vercel.app/#/batch-stream/1"}]}, {"after": false, "l": [{"t": "Consensus & Leader Election", "u": "https://designed-to-scale.vercel.app/#/consensus/1"}, {"t": "CAP & Consistency", "u": "https://designed-to-scale.vercel.app/#/cap/1"}]}, {"after": false, "l": [{"t": "Redundancy & Failover", "u": "https://designed-to-scale.vercel.app/#/redundancy/1"}, {"t": "Rate Limiting", "u": "https://designed-to-scale.vercel.app/#/rate-limiting/1"}, {"t": "Timeouts & Retries", "u": "https://designed-to-scale.vercel.app/#/timeouts-retries/1"}]}, {"after": false, "l": [{"t": "Observability", "u": "https://designed-to-scale.vercel.app/#/observability/1"}]}, {"after": true, "l": [{"t": "Design a URL Shortener", "u": "https://designed-to-scale.vercel.app/#/design-url-shortener/1"}, {"t": "Unique IDs at Scale", "u": "https://designed-to-scale.vercel.app/#/unique-ids/1"}]}, {"after": true, "l": [{"t": "Design a Chat System", "u": "https://designed-to-scale.vercel.app/#/design-chat/1"}, {"t": "Real-time Updates", "u": "https://designed-to-scale.vercel.app/#/realtime/1"}]}, {"after": true, "l": [{"t": "Design a News Feed", "u": "https://designed-to-scale.vercel.app/#/design-news-feed/1"}]}, {"after": false, "l": [{"t": "Transactions & Isolation", "u": "https://designed-to-scale.vercel.app/#/transactions/1"}]}, {"after": false, "l": [{"t": "Content Delivery", "u": "https://designed-to-scale.vercel.app/#/cdn/1"}, {"t": "Files & Media", "u": "https://designed-to-scale.vercel.app/#/files/1"}]}, {"after": false, "l": [{"t": "Authentication", "u": "https://designed-to-scale.vercel.app/#/authentication/1"}, {"t": "Authorization", "u": "https://designed-to-scale.vercel.app/#/authorization/1"}, {"t": "Encryption & Secrets", "u": "https://designed-to-scale.vercel.app/#/encryption/1"}]}, {"after": false, "l": [{"t": "Sagas & Distributed Transactions", "u": "https://designed-to-scale.vercel.app/#/sagas/1"}, {"t": "Monolith vs Microservices", "u": "https://designed-to-scale.vercel.app/#/microservices/1"}, {"t": "Service Discovery & Gateways", "u": "https://designed-to-scale.vercel.app/#/service-discovery/1"}]}, {"after": false, "l": []}, {"after": false, "l": []}, {"after": false, "l": []}, {"after": false, "l": [{"t": "HLD & LLD", "u": "https://designed-to-scale.vercel.app/#/hld-lld/1"}]}, {"after": false, "l": []}];
 const XT=[{"yt":[{"t":"TechWorld with Nana: docker tutorial","u":"https://www.youtube.com/@TechWorldwithNana/search?query=docker%20tutorial"}],"gh":[{"t":"docker/awesome-compose: ready-made compose examples","u":"https://github.com/docker/awesome-compose"}]},{"yt":[{"t":"Hussein Nasser: TCP","u":"https://www.youtube.com/@hnasr/search?query=TCP"},{"t":"ByteByteGo: what happens when you type a URL","u":"https://www.youtube.com/@ByteByteGo/search?query=what%20happens%20when%20you%20type%20a%20URL"}],"gh":[{"t":"system-design-101 (visual explainers)","u":"https://github.com/ByteByteGoHq/system-design-101"}]},{"yt":[{"t":"Hussein Nasser: DNS","u":"https://www.youtube.com/@hnasr/search?query=DNS"},{"t":"ByteByteGo: DNS","u":"https://www.youtube.com/@ByteByteGo/search?query=DNS"}],"gh":[{"t":"system-design-101 (visual explainers)","u":"https://github.com/ByteByteGoHq/system-design-101"}]},{"yt":[{"t":"Hussein Nasser: HTTP/2","u":"https://www.youtube.com/@hnasr/search?query=HTTP/2"},{"t":"ByteByteGo: gRPC","u":"https://www.youtube.com/@ByteByteGo/search?query=gRPC"}],"gh":[{"t":"grpc/grpc: examples for every language","u":"https://github.com/grpc/grpc"}]},{"yt":[{"t":"ByteByteGo: load balancer","u":"https://www.youtube.com/@ByteByteGo/search?query=load%20balancer"},{"t":"Hussein Nasser: load balancing","u":"https://www.youtube.com/@hnasr/search?query=load%20balancing"}],"gh":[{"t":"grafana/k6: load testing tool","u":"https://github.com/grafana/k6"},{"t":"docker/awesome-compose","u":"https://github.com/docker/awesome-compose"}]},{"yt":[{"t":"ByteByteGo: cache","u":"https://www.youtube.com/@ByteByteGo/search?query=cache"},{"t":"Hussein Nasser: redis","u":"https://www.youtube.com/@hnasr/search?query=redis"}],"gh":[{"t":"karanpratapsingh/system-design (caching chapter)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"Hussein Nasser: database index","u":"https://www.youtube.com/@hnasr/search?query=database%20index"},{"t":"ByteByteGo: database index","u":"https://www.youtube.com/@ByteByteGo/search?query=database%20index"}],"gh":[{"t":"karanpratapsingh/system-design (databases)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"Hussein Nasser: replication","u":"https://www.youtube.com/@hnasr/search?query=replication"},{"t":"ByteByteGo: sharding","u":"https://www.youtube.com/@ByteByteGo/search?query=sharding"}],"gh":[{"t":"karanpratapsingh/system-design (replication, sharding)","u":"https://github.com/karanpratapsingh/system-design"}]},{"yt":[{"t":"ByteByteGo: kafka","u":"https://www.youtube.com/@ByteByteGo/search?query=kafka"},{"t":"Confluent: kafka 101","u":"https://www.youtube.com/@Confluent/search?query=kafka%20101"}],"gh":[{"t":"confluentinc/cp-all-in-one: Kafka compose files","u":"https://github.com/confluentinc/cp-all-in-one"},{"t":"kafbat/kafka-ui","u":"https://github.com/kafbat/kafka-ui"}]},{"yt":[{"t":"Confluent: consumer group","u":"https://www.youtube.com/@Confluent/search?query=consumer%20group"},{"t":"Hussein Nasser: kafka","u":"https://www.youtube.com/@hnasr/search?query=kafka"}],"gh":[{"t":"confluentinc/cp-all-in-one","u":"https://github.com/confluentinc/cp-all-in-one"}]},{"yt":[{"t":"MIT 6.824 Raft lecture (search)","u":"https://www.youtube.com/results?search_query=MIT+6.824+raft+lecture"},{"t":"ByteByteGo: raft","u":"https://www.youtube.com/@ByteByteGo/search?query=raft"}],"gh":[{"t":"etcd-io/etcd","u":"https://github.com/etcd-io/etcd"},{"t":"MIT 6.5840 Distributed Systems course (labs)","u":"https://pdos.csail.mit.edu/6.824/"}]},{"yt":[{"t":"ByteByteGo: circuit breaker","u":"https://www.youtube.com/@ByteByteGo/search?query=circuit%20breaker"},{"t":"Gaurav Sen: rate limiting","u":"https://www.youtube.com/@gkcs/search?query=rate%20limiting"}],"gh":[{"t":"Shopify/toxiproxy","u":"https://github.com/Shopify/toxiproxy"},{"t":"resilience4j (study the patterns)","u":"https://github.com/resilience4j/resilience4j"}]},{"yt":[{"t":"TechWorld with Nana: prometheus","u":"https://www.youtube.com/@TechWorldwithNana/search?query=prometheus"},{"t":"ByteByteGo: observability","u":"https://www.youtube.com/@ByteByteGo/search?query=observability"}],"gh":[{"t":"prometheus/prometheus","u":"https://github.com/prometheus/prometheus"}]},{"yt":[{"t":"ByteByteGo (watch AFTER your design): url shortener","u":"https://www.youtube.com/@ByteByteGo/search?query=url%20shortener"}],"gh":[{"t":"ashishps1/awesome-system-design-resources","u":"https://github.com/ashishps1/awesome-system-design-resources"}]},{"yt":[{"t":"Gaurav Sen (watch AFTER your design): whatsapp","u":"https://www.youtube.com/@gkcs/search?query=whatsapp"},{"t":"ByteByteGo (watch AFTER your design): chat","u":"https://www.youtube.com/@ByteByteGo/search?query=chat"}],"gh":[{"t":"binhnguyennus/awesome-scalability","u":"https://github.com/binhnguyennus/awesome-scalability"}]},{"yt":[{"t":"ByteByteGo (watch AFTER your design): news feed","u":"https://www.youtube.com/@ByteByteGo/search?query=news%20feed"}],"gh":[{"t":"binhnguyennus/awesome-scalability","u":"https://github.com/binhnguyennus/awesome-scalability"}]},{"yt":[{"t":"ByteByteGo: API design","u":"https://www.youtube.com/@ByteByteGo/search?query=API%20design"},{"t":"Hussein Nasser: idempotency","u":"https://www.youtube.com/@hnasr/search?query=idempotency"}],"gh":[{"t":"microsoft/api-guidelines","u":"https://github.com/microsoft/api-guidelines"},{"t":"zalando/restful-api-guidelines","u":"https://github.com/zalando/restful-api-guidelines"}]},{"yt":[{"t":"ByteByteGo: CDN","u":"https://www.youtube.com/@ByteByteGo/search?query=CDN"},{"t":"ByteByteGo: search","u":"https://www.youtube.com/@ByteByteGo/search?query=search"}],"gh":[{"t":"minio/minio","u":"https://github.com/minio/minio"},{"t":"meilisearch/meilisearch","u":"https://github.com/meilisearch/meilisearch"}]},{"yt":[{"t":"ByteByteGo: OAuth","u":"https://www.youtube.com/@ByteByteGo/search?query=OAuth"},{"t":"Hussein Nasser: JWT","u":"https://www.youtube.com/@hnasr/search?query=JWT"}],"gh":[{"t":"OWASP Cheat Sheet Series","u":"https://github.com/OWASP/CheatSheetSeries"},{"t":"OWASP Juice Shop (a legal practice target)","u":"https://github.com/juice-shop/juice-shop"}]},{"yt":[{"t":"ByteByteGo: saga","u":"https://www.youtube.com/@ByteByteGo/search?query=saga"},{"t":"ByteByteGo: CQRS","u":"https://www.youtube.com/@ByteByteGo/search?query=CQRS"}],"gh":[{"t":"microservices-patterns/ftgo-application","u":"https://github.com/microservices-patterns/ftgo-application"}]},{"yt":[],"gh":[{"t":"pshenok/server-survival (open source)","u":"https://github.com/pshenok/server-survival"}]},{"yt":[{"t":"Queueing theory and Little's Law (search)","u":"https://www.youtube.com/results?search_query=queueing+theory+little%27s+law+explained"}],"gh":[]},{"yt":[{"t":"Discrete-event simulation (search)","u":"https://www.youtube.com/results?search_query=discrete+event+simulation+explained"}],"gh":[{"t":"codecrafters-io/build-your-own-x","u":"https://github.com/codecrafters-io/build-your-own-x"}]},{"yt":[{"t":"Architecture decision records (search)","u":"https://www.youtube.com/results?search_query=architecture+decision+records"}],"gh":[{"t":"joelparkerhenderson/architecture-decision-record","u":"https://github.com/joelparkerhenderson/architecture-decision-record"},{"t":"albedoweb/system-design-game","u":"https://github.com/albedoweb/system-design-game"},{"t":"vijaygupta18/system-design-simulator","u":"https://github.com/vijaygupta18/system-design-simulator"}]},{"yt":[],"gh":[]}];
+const CONCEPTS=[["container vs virtual machine", "image vs container", "docker compose as a city plan", "WSL2 as Linux inside Windows"], ["latency vs bandwidth", "TCP three-way handshake", "round trips and distance", "keep-alive and connection reuse", "slow start"], ["DNS resolution chain", "TTL and caching of records", "anycast", "forward vs reverse proxy", "why sites hide servers behind a proxy"], ["TLS handshake cost", "HTTP/1.1 head-of-line blocking", "HTTP/2 multiplexing", "WebSockets vs polling", "gRPC and streaming"], ["round robin", "least connections", "power of two choices", "health checks", "p95 vs average latency", "back-of-envelope estimation"], ["cache-aside", "write-through and write-behind", "TTL", "eviction LRU and LFU", "hit ratio", "cache stampede and thundering herd", "invalidation"], ["B-tree and B+ tree", "index scan vs sequential scan", "query plans", "composite index column order", "cost of indexes on writes", "SQL vs NoSQL"], ["leader-follower replication", "sync vs async replication", "replication lag", "read-your-writes", "sharding keys", "hot shards", "consistent hashing"], ["queue vs log", "topics and partitions", "keys and partition assignment", "ordering per partition", "decoupling and backpressure"], ["consumer groups", "consumer lag", "rebalancing", "offsets and commits", "at-least-once vs exactly-once", "idempotent consumers", "replication factor"], ["leader election", "terms and heartbeats", "log replication", "quorum and majority", "split-brain", "why odd cluster sizes"], ["timeouts", "retries with exponential backoff and jitter", "retry storms", "circuit breaker", "bulkheads", "token bucket rate limiting", "cascading failure"], ["metrics logs traces", "four golden signals", "percentiles", "dashboards and alerts", "horizontal vs vertical scaling", "autoscaling signals"], ["requirements and numbers first", "ID generation and base62", "read-heavy design", "caching hot links", "rate limiting abuse"], ["persistent connections at scale", "presence", "message ordering", "offline delivery and inbox", "fan-out to group chats", "message storage"], ["fan-out on write", "fan-out on read", "hybrid for celebrities", "feed ranking at a high level", "notification pipelines"], ["resource-oriented APIs", "cursor vs offset pagination", "idempotency keys", "versioning", "data modeling for access patterns", "preventing double booking"], ["object storage vs block vs file", "presigned URLs", "CDN edge caching and invalidation", "inverted index", "search relevance basics"], ["authentication vs authorization", "password hashing", "sessions vs JWT", "OAuth 2 flows", "OWASP top risks", "rate limiting login"], ["saga pattern and compensation", "event sourcing", "CQRS", "multi-region latency", "CAP and PACELC", "conflict resolution"], ["lesson flow design", "what to simulate vs fake", "feedback loops in learning", "product brief"], ["arrival rate and service rate", "utilization", "Little's Law", "M/M/1 intuition", "why latency explodes near saturation"], ["discrete-event simulation", "event queue as priority queue", "simulated clock vs wall clock", "modeling components", "validation against reality"], ["reading unfamiliar codebases", "Web Worker for simulation", "rendering on canvas", "lessons as data", "architecture decision records"], ["vertical slice", "playtesting", "learning from observation"]];
+
+/* ---------- the Codex: teach-first theory, Act I written; later weeks are added as the learner reaches them ---------- */
+const TH={
+0:{cold:"Your app runs fine on your laptop and crashes on a friend's machine. What could be different, and what would you do about it?",
+ look:["What does <code>wsl --install</code> actually put on your machine, and how do you check you are on WSL version 2?","In Docker's own words, what is the difference between an image and a container?"],
+ c:[
+ {t:"Container vs virtual machine",
+  x:`<p>A <b>virtual machine</b> pretends to be a whole computer. A hypervisor fakes the hardware, and each VM boots its own operating system with its own kernel. That costs gigabytes of memory and tens of seconds to boot.</p>
+<p>A <b>container</b> is not a small computer. It is an ordinary Linux process on the host's kernel, fenced in by two kernel features:</p>
+<ul><li><b>namespaces</b> control what it can <i>see</i>: its own process list, network, hostname and filesystem.</li>
+<li><b>cgroups</b> control how much it can <i>use</i>: CPU, memory, disk I/O.</li></ul>
+<p>Nothing boots, so a container starts in well under a second.</p>`,
+  d:`  Virtual machines                    Containers
+ ┌──────────┐┌──────────┐         ┌───────┐┌───────┐┌───────┐
+ │  App A   ││  App B   │         │ App A ││ App B ││ App C │
+ │  libs    ││  libs    │         │ libs  ││ libs  ││ libs  │
+ │ guest OS ││ guest OS │         └───────┘└───────┘└───────┘
+ │ + kernel ││ + kernel │          ── namespaces + cgroups ──
+ └──────────┘└──────────┘             ONE shared kernel
+        hypervisor                        host OS
+        hardware                          hardware`,
+  q:"A Linux laptop runs 20 containers and 2 virtual machines. How many kernels are running?",
+  a:"Three. All 20 containers share the host's single kernel; each VM boots its own. That shared kernel is why containers are light and fast, and also why a container can't run a different OS kernel than its host."},
+ {t:"WSL2: Linux inside Windows",
+  x:`<p>Namespaces and cgroups are <b>Linux</b> features. Windows doesn't have them, so on Windows something has to supply a Linux kernel.</p>
+<p><b>WSL2</b> runs a real Linux kernel inside a small, fast utility VM. Docker Desktop runs the Docker <b>engine</b> (<code>dockerd</code>) inside that VM. The <code>docker</code> command you type in PowerShell is only a <b>client</b>: it sends requests to the engine.</p>
+<p>So on your machine there is exactly one VM, and every container shares its kernel.</p>`,
+  d:` Windows 11
+  ├─ PowerShell:  docker run nginx      ← client only
+  │        │  (named pipe)
+  └─ WSL2 utility VM ── one Linux kernel
+         └─ dockerd (Docker engine)
+               ├─ container: nginx
+               └─ container: redis`,
+  q:"The docker CLI is installed, but Docker Desktop is stopped. Why does docker ps fail?",
+  a:"The CLI is just a client. It sends the request to the engine, and the engine lives inside the WSL2 VM that Docker Desktop starts. With Desktop stopped, nothing is listening on the other end of the pipe, so the CLI reports it can't connect to the engine."},
+ {t:"Image vs container",
+  x:`<p>An <b>image</b> is a read-only blueprint: a stack of filesystem layers plus the command to run. A <b>container</b> is that blueprint running: a fenced process with a thin <b>writable layer</b> on top.</p>
+<p>Many containers can run from one image; each gets its own writable layer. Delete the container and its writable layer is gone with it.</p>
+<p>State you want to keep goes in a <b>volume</b>, which lives outside the container. This is the first architect's question you'll ask every week: <i>where does the state live?</i></p>`,
+  tb:[["","Image","Container"],["What it is","Read-only layers + start command","A running process + writable layer"],["How many","One per version (nginx:1.27)","As many as you start"],["Changes inside","Never","Saved in its writable layer"],["When deleted","Containers can't start from it","Its writable layer is lost"]],
+  q:"You run docker run -d nginx three times, write /notes.txt inside one container, then delete that container. How many images and containers are left, and where did notes.txt go?",
+  a:"One image, and two containers (three until you deleted one). notes.txt lived in the deleted container's writable layer, so it is gone. The image never changed. To keep it you would have mounted a volume."},
+ {t:"docker compose: the city plan",
+  x:`<p>Typing <code>docker run</code> for every service doesn't scale. <b>docker compose</b> reads one file, <code>docker-compose.yml</code>, that declares the whole city: its services, ports, volumes and networks. <code>docker compose up</code> makes reality match the plan; <code>down</code> tears it down.</p>
+<p>Compose puts all services on one private network with built-in DNS, so each service reaches the others <b>by its service name</b>. <code>ports: "8080:80"</code> means "host port 8080 goes to container port 80".</p>
+<p>Your Citadel is this one file, growing a little every week.</p>`,
+  d:`services:
+  web:                     # reachable as  http://web:80
+    image: nginx:1.27
+    ports: ["8080:80"]     # host:container  → open localhost:8080
+  cache:                   # reachable as  cache:6379
+    image: redis:7`,
+  q:"Inside the web container, what hostname reaches Redis, and why doesn't localhost work?",
+  a:"cache, the service name, which compose's network DNS resolves. localhost inside a container means that container itself, because each container has its own network namespace. Redis isn't running inside the web container, so nothing answers there."}
+ ]},
+1:{cold:"A user in Hanoi opens a tiny page from a server in Virginia. It takes over a second, though the page is only 5 KB. Where does the time go?",
+ look:["Of the four delays (propagation, transmission, processing, queuing), which one dominates a small request across an ocean?","Why does a new TCP connection start slowly, and what is the initial congestion window?","How many times slower is a cross-continent round trip than reading 1 MB from memory?"],
+ c:[
+ {t:"Latency vs bandwidth",
+  x:`<p>Think of a pipe. <b>Latency</b> is its length: how long one bit takes to get from end to end (milliseconds). <b>Bandwidth</b> is its width: how many bits per second fit through.</p>
+<p>Most web and API traffic is small, so it is <b>latency-bound</b>. Sending 10 KB at 100 Mbps takes under 1 ms, but crossing an ocean takes 100+ ms each way. A wider pipe doesn't make it shorter.</p>`,
+  tb:[["Step","Typical time"],["Read from main memory","100 ns"],["SSD random read","~100 µs"],["Round trip inside one datacenter","~0.5 ms"],["Round trip across a continent","~150 ms"]],
+  q:"You upgrade from 100 Mbps to 1 Gbps. A tiny API call from Hanoi to Virginia took 250 ms. How long does it take now?",
+  a:"Still about 250 ms. The payload's transmission time was already a tiny fraction of a millisecond; the 250 ms is distance and round trips. More bandwidth helps large downloads, not small chatty requests."},
+ {t:"The TCP three-way handshake",
+  x:`<p>Before any data flows, client and server agree to talk: <b>SYN</b> → <b>SYN-ACK</b> → <b>ACK</b>. That costs one full round trip (RTT) before the request can even leave. The client sends its request right behind the ACK, and the response comes back one more RTT later.</p>`,
+  d:` client                              server
+   │ ── SYN ──────────────────────────▶ │  ┐
+   │ ◀────────────────────── SYN-ACK ── │  ┘ 1 RTT: handshake
+   │ ── ACK + GET /index.html ────────▶ │  ┐
+   │ ◀───────────────── 200 OK + data ── │  ┘ 1 RTT: request
+   ▼ first byte arrives after 2 RTTs    ▼`,
+  q:"RTT is 100 ms. Plain HTTP over a brand-new TCP connection, ignoring DNS and server time: when can the first byte of the response arrive at the earliest?",
+  a:"After about 200 ms: one RTT for the handshake and one for the request and response. Add TLS (week 3) or a DNS lookup (week 2) and it grows further."},
+ {t:"Round trips and distance",
+  x:`<p>Light in fiber travels at about <b>200,000 km/s</b>, two-thirds of its speed in a vacuum. Hanoi to Virginia is about 14,000 km, so one way takes at least 70 ms and a round trip at least 140 ms. Real routes are longer, so you see about 250 ms.</p>
+<p>No code fixes physics. Architects fight latency in two ways: <b>fewer round trips</b> (reuse connections, batch requests) and <b>shorter distance</b> (servers or caches closer to users).</p>`,
+  q:"Your server is infinitely fast. Why does putting a CDN node in Singapore still make the page faster for Hanoi?",
+  a:"Every round trip (handshake, TLS, each request) now crosses about 2,000 km instead of 14,000 km. Each RTT shrinks from about 250 ms to about 30–40 ms, and a page costs several round trips."},
+ {t:"Keep-alive: reuse the road",
+  x:`<p>Opening a connection costs a handshake. <b>Keep-alive</b> leaves the TCP connection open after a response so the next request skips that cost. HTTP/1.1 keeps connections alive by default. Servers close idle ones after a timeout to free memory.</p>
+<p>That's the trade-off: open connections cost server memory, and new connections cost the user round trips.</p>`,
+  q:"A page makes 10 requests one after another; RTT is 100 ms. Roughly how much time does keep-alive save compared with a new connection per request?",
+  a:"About 900 ms. With a new connection per request you pay 10 handshakes; with keep-alive you pay 1. Nine saved RTTs × 100 ms. With TLS each saved connection is worth even more."},
+ {t:"Slow start",
+  x:`<p>TCP doesn't know how fast the network is, so a new connection starts carefully. It sends a small <b>initial congestion window</b> (on modern Linux, 10 segments, about 14 KB), then roughly doubles it each round trip until packets get lost.</p>
+<p>So a fresh connection can't use its full bandwidth right away, and a large first response needs several round trips. Another reason to reuse warm connections.</p>`,
+  d:` RTT 1:  ▮▮▮▮▮▮▮▮▮▮                  ~14 KB
+ RTT 2:  ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮        ~28 KB
+ RTT 3:  ▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮▮   ~56 KB`,
+  q:"Why might keeping the first HTML response under about 14 KB make a page feel faster?",
+  a:"It fits in the initial congestion window, so the whole response arrives in the first round trip after the request. A 60 KB response on a cold connection needs about three round trips, which is hundreds of milliseconds over long distances."}
+ ]},
+2:{cold:"You type example.com. Your computer only understands numbers. Who tells it the address, and what happens if that someone is down?",
+ look:["What is the difference between a recursive resolver and an authoritative nameserver?","Which jobs does a reverse proxy take off your application servers?"],
+ c:[
+ {t:"The DNS resolution chain",
+  x:`<p>Your machine asks a <b>recursive resolver</b> (your ISP's, or 1.1.1.1 / 8.8.8.8) to find the answer for it. If the resolver hasn't cached it, it walks the tree from the top:</p>
+<ul><li>the <b>root</b> servers say "ask the .com servers"</li><li>the <b>.com TLD</b> servers say "ask example.com's nameservers"</li><li>the <b>authoritative</b> nameserver gives the real answer: an A record with the IP</li></ul>
+<p>Before any of that, the browser and the OS check their own caches.</p>`,
+  d:` browser cache → OS cache → recursive resolver
+                                   │ ① where is example.com?
+                                   ├──▶ root (.)          "try .com"
+                                   ├──▶ .com TLD          "try ns1.example.com"
+                                   └──▶ authoritative     "203.0.113.7"  ✔
+                             (resolver caches the answer for TTL seconds)`,
+  q:"Which server actually knows example.com's IP, and which ones only point the way?",
+  a:"Only the authoritative nameserver for example.com knows the answer. Root and TLD servers delegate: they say which servers to ask next. The recursive resolver does the walking and caching for you."},
+ {t:"TTL and caching",
+  x:`<p>Every DNS record carries a <b>TTL</b> (time to live, in seconds): how long resolvers and browsers may cache it. Caching is why DNS survives billions of lookups a day.</p>
+<p>The trade-off: a high TTL means fewer lookups but slow changes; a low TTL means changes spread fast but more lookups. Before a migration, lower the TTL at least one old TTL ahead of time.</p>`,
+  q:"Your record has TTL 86400 and you move your server to a new IP. Some users still reach the old one. For how long, worst case, and how could you have prevented it?",
+  a:"Up to 24 hours, the old TTL, and longer for resolvers that ignore TTLs. Lower the TTL (to about 300 s) at least 24 hours before the move, switch the IP, and keep the old server running until traffic to it drains."},
+ {t:"Anycast",
+  x:`<p>Normally one IP means one machine. With <b>anycast</b>, many machines in many cities announce the <b>same IP</b>, and internet routing (BGP) sends each user to the nearest one.</p>
+<p>DNS root servers (13 names, hundreds of machines), public resolvers like 1.1.1.1, and CDNs all use it. It gives speed and survival: if one site dies, routes move to the next.</p>`,
+  q:"1.1.1.1 is a single IP address. How can it answer quickly in both Hanoi and Paris?",
+  a:"Anycast: Cloudflare announces 1.1.1.1 from datacenters around the world, and routing delivers each user's packets to the closest one. Hanoi and Paris are talking to different machines with the same address."},
+ {t:"Forward proxy vs reverse proxy",
+  x:`<p>Both sit in the middle; the difference is <b>whose side they're on</b>.</p>
+<ul><li>A <b>forward proxy</b> acts for <i>clients</i>. Servers see the proxy, not the users. Examples: a school or corporate web filter.</li>
+<li>A <b>reverse proxy</b> acts for <i>servers</i>. Users see the proxy, not the servers. Examples: nginx, a load balancer, a CDN edge.</li></ul>`,
+  d:` FORWARD (clients' side)              REVERSE (servers' side)
+ user ─┐                                       ┌─▶ app-1
+ user ─┼─▶ [proxy] ─▶ internet ─▶ site  user ─▶ [nginx] ─┼─▶ app-2
+ user ─┘                                       └─▶ app-3
+  sites see only the proxy                users see only nginx`,
+  q:"A school blocks YouTube with a proxy. Forward or reverse? And the nginx in front of your two app copies?",
+  a:"The school's is a forward proxy: it works for the students' machines and controls where they can go. Your nginx is a reverse proxy: it works for your servers and decides which one handles each request."},
+ {t:"Why sites hide behind a reverse proxy",
+  x:`<p>One front door makes many jobs easy:</p>
+<ul><li><b>TLS termination</b>: certificates live in one place.</li><li><b>Load balancing</b> and health checks.</li><li><b>Caching and compression</b> of responses.</li><li><b>Hiding</b> internal IPs and layout, which makes attacks harder.</li><li><b>Rate limits</b> and blocking bad traffic.</li><li>Swapping servers without clients noticing.</li></ul>`,
+  q:"You must replace app server 2 at noon without any user noticing. How does the reverse proxy make this possible?",
+  a:"Clients only know the proxy's address. You take app-2 out of the proxy's upstream pool, let its requests finish (draining), replace it, health-check it, and add it back. Traffic flows to the other servers meanwhile, and no client config changes."}
+ ]},
+3:{cold:"Your chat app asks the server every second whether there are new messages. It works for 100 users. What goes wrong at 100,000?",
+ look:["How many round trips does a full TLS handshake cost, and how does session resumption cut it?","In HTTP/2, what is a stream and what is a frame?","What are gRPC's four kinds of service method?"],
+ c:[
+ {t:"The cost of the TLS handshake",
+  x:`<p>HTTPS adds a <b>TLS handshake</b> after TCP's: client and server agree on keys and the server proves its identity with a certificate. <b>TLS 1.2</b> costs 2 extra round trips; <b>TLS 1.3</b> costs 1. Resumed sessions can even send data in the first flight (0-RTT), with replay risks.</p>
+<p>Encryption itself is cheap on modern CPUs. The expensive part is the round trips, which is why connection reuse matters even more with HTTPS.</p>`,
+  d:` new HTTPS connection, TLS 1.3
+ ── TCP handshake ──────────  1 RTT
+ ── TLS handshake ──────────  1 RTT
+ ── GET / → response ───────  1 RTT
+                              = 3 RTTs before the first byte`,
+  q:"RTT is 100 ms, TLS 1.3, brand-new connection. When can the first response byte arrive at the earliest? And with TLS 1.2?",
+  a:"About 300 ms with TLS 1.3 (TCP + TLS + request). About 400 ms with TLS 1.2, which needs two TLS round trips. On a reused connection, it's 100 ms."},
+ {t:"HTTP/1.1 and head-of-line blocking",
+  x:`<p>On one HTTP/1.1 connection, requests go <b>one at a time</b>: send, wait for the full response, then send the next. A slow response blocks everything queued behind it. That is <b>head-of-line blocking</b>.</p>
+<p>Browsers work around it by opening about <b>6 connections per host</b>, each paying its own handshakes.</p>`,
+  q:"A page needs 50 small files over HTTP/1.1 with 6 connections. Roughly how many request round trips does it take after the connections are open?",
+  a:"About 9 waves: 50 ÷ 6 rounds up to 9, and each wave costs at least one RTT. Before that, the 6 connections each pay TCP + TLS handshakes."},
+ {t:"HTTP/2 multiplexing",
+  x:`<p>HTTP/2 uses <b>one connection</b> and splits every request and response into small <b>frames</b> tagged with a <b>stream</b> ID. Frames from many streams interleave, so 50 requests fly at once. Headers are compressed (HPACK).</p>
+<p>The catch: it all rides one TCP connection, and TCP delivers bytes in order. One lost packet stalls <i>every</i> stream until it's resent. HTTP/3 moves to QUIC over UDP to fix exactly this.</p>`,
+  d:` HTTP/1.1  conn1: [ req A ][ resp A ][ req D ][ resp D ] …
+           conn2: [ req B ][ resp B ][ req E ] …      (×6)
+ HTTP/2    one conn: A1 B1 C1 A2 D1 B2 E1 C2 …   frames interleaved`,
+  q:"On a lossy mobile network, why can HTTP/2 sometimes be slower than HTTP/1.1 with 6 connections?",
+  a:"With HTTP/2, a single lost packet stalls the one TCP connection carrying every stream. With 6 separate connections, a loss stalls only one of them while the other five keep flowing."},
+ {t:"Polling, long polling and WebSockets",
+  x:`<ul><li><b>Polling</b>: the client asks every N seconds. Simple, but wasteful, and news can wait up to N seconds.</li>
+<li><b>Long polling</b>: the server holds the request open until there is news, then the client asks again.</li>
+<li><b>WebSocket</b>: one HTTP request <i>upgrades</i> into a persistent two-way connection, and the server pushes instantly.</li>
+<li><b>SSE</b>: server-to-client only, over plain HTTP.</li></ul>
+<p>The cost of push: every user holds an open connection, so servers keep state and load balancers must handle long-lived connections.</p>`,
+  q:"100,000 users poll every second, and only 1% of polls return new messages. How many wasted requests per second is that?",
+  a:"About 99,000 per second. The server handles 100,000 requests per second and 99% return nothing. That's the cold question's answer in numbers, and the reason chat systems push instead of poll."},
+ {t:"gRPC and streaming",
+  x:`<p><b>gRPC</b> is a remote procedure call framework: you write the contract in a <code>.proto</code> file, and it generates typed clients and servers in many languages. Messages use <b>Protocol Buffers</b> (compact binary) over HTTP/2.</p>
+<p>Four call shapes: <b>unary</b> (one request, one response), <b>server streaming</b>, <b>client streaming</b>, and <b>bidirectional streaming</b>.</p>`,
+  q:"Why is gRPC popular between internal services but rare for public browser APIs?",
+  a:"Internally you control both sides, so you get speed, strict typed contracts, generated code and streaming. Browsers can't speak native gRPC (it needs HTTP/2 features they don't expose), so you'd need gRPC-Web and a proxy. Binary payloads are also harder for outside developers to debug than JSON over REST."}
+ ]}
+};
 
 /* ---------- state ---------- */
 const KEY="architects-road-v1";
 let S={done:{},notes:{}};
 try{const raw=localStorage.getItem(KEY); if(raw){const o=JSON.parse(raw); S={done:o.done||{},notes:o.notes||{}};}}catch(e){}
 let dbRef=null, saveTimer=null, saving=false, pending=false;
-const syncEl=document.getElementById("sync");
+const $=id=>document.getElementById(id);
+const syncEl=$("sync");
 
 function persist(){
   try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
   if(!dbRef) return;
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(flush,800);
+  clearTimeout(saveTimer); saveTimer=setTimeout(flush,800);
 }
 async function flush(){
   if(saving){pending=true;return}
@@ -406,106 +637,170 @@ async function flush(){
   if(pending){pending=false;flush();}
 }
 
-/* ---------- render ---------- */
-const tasksOf=w=>{
-  const k=[];
-  w.read.forEach((_,i)=>k.push(w.w+"-r"+i));
-  w.watch.forEach((_,i)=>k.push(w.w+"-w"+i));
-  w.build.forEach((_,i)=>k.push(w.w+"-b"+i));
-  DTS[w.w].l.forEach((_,i)=>k.push(w.w+"-d"+i));
-  XT[w.w].yt.forEach((_,i)=>k.push(w.w+"-y"+i));
-  XT[w.w].gh.forEach((_,i)=>k.push(w.w+"-g"+i));
-  if(w.sd) k.push(w.w+"-sd");
-  k.push(w.w+"-boss");
-  return k;
-};
-const ALL=W.flatMap(tasksOf);
+/* ---------- helpers ---------- */
+const BEATS=[["Scene","The cold question"],["Prediction","Commit to a guess"],["Codex","Learn the theory"],["Watch","See it run"],["Build","Build, break, measure"],["Boss","Face the Foe"],["Debrief","Field log"]];
+const bk=(w,i)=>w+"-beat"+i;
+const beatsDone=w=>BEATS.filter((_,i)=>S.done[bk(w,i+1)]).length;
+const curBeat=w=>{for(let i=1;i<=7;i++) if(!S.done[bk(w,i)]) return i; return 0;};
+const cleared=w=>!!S.done[bk(w,7)];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-
+const strip=s=>String(s).replace(/<[^>]+>/g,"");
+const link=l=>`<a href="${l.u}" target="_blank" rel="noopener">${l.t}</a>`;
+const kind=(t,c,html)=>`<span class="kd ${c}">${t}</span>${html}`;
+const day=d=>`<span class="day">${d}</span>`;
 function task(id,html){
   return `<li class="task"><input type="checkbox" id="t-${id}" data-k="${id}" ${S.done[id]?"checked":""}><label for="t-${id}">${html}</label></li>`;
 }
-function link(l){return `<a href="${l.u}" target="_blank" rel="noopener">${l.t}</a>`}
-
-function chapter(w){
-  const parts=[];
-  const X=XT[w.w], kind=(t,c,html)=>`<span class="kd ${c}">${t}</span>${html}`;
-  const R=w.read.map((l,i)=>task(w.w+"-r"+i,kind("Read","k-read",link(l))));
-  const Y=X.yt.map((l,i)=>task(w.w+"-y"+i,kind("YouTube","k-yt",link(l))));
-  const V=w.watch.map((l,i)=>task(w.w+"-w"+i,kind("Visualize","k-viz",link(l))));
-  const D=DTS[w.w].l.map((l,i)=>task(w.w+"-d"+i,kind(DTS[w.w].after?"Compare":"Step through","k-viz",link(l))));
-  const DW=DTS[w.w].after?[]:D, DA=DTS[w.w].after?D:[];
-  const G=X.gh.map((l,i)=>task(w.w+"-g"+i,kind("GitHub","k-gh",link(l))));
-  const B=w.build.map((t,i)=>task(w.w+"-b"+i,kind("Lab","k-lab",t)));
-  const half=Math.ceil(B.length/2);
-  const days=[
-    ["Mon","Read",R.slice(0,1),"No reading today. Catch up on last week, or rest."],
-    ["Tue","Read + video",R.slice(1).concat(Y.slice(0,1)),"Re-read Monday's piece and write 5 lines in your own words."],
-    ["Wed","Watch it run",V.concat(DW,Y.slice(1)),"No visualizer this week. Your own Citadel is the view."],
-    ["Thu","Build",B.slice(0,half).concat(G),"Sketch your design on paper before you write any code."],
-    ["Fri","Break + measure",B.slice(half),"Polish Thursday's work and write down the numbers you measured."]
-  ];
-  days.forEach(([d,label,items,empty])=>parts.push(`<div class="part"><b>${d} · ${label}</b>${items.length?`<ul>${items.join("")}</ul>`:`<span class="na">${empty}</span>`}</div>`));
-  const wk=[];
-  if(w.sd) wk.push(task(w.w+"-sd",kind("Simulator","k-viz",`Rebuild this week's piece in <a href="https://systemdesigner.io/" target="_blank" rel="noopener">systemdesigner.io</a> and push traffic until it breaks`)));
-  wk.push(task(w.w+"-boss",kind("Boss","k-boss",`<strong>${FOES[w.w]}</strong> attacks. ${w.boss}`)));
-  DA.forEach(x=>wk.push(x));
-  parts.push(`<div class="part"><b>Weekend · Battle</b><ul>${wk.join("")}</ul></div>`);
-  return `<details class="ch" id="ch-${w.w}" data-w="${w.w}">
-    <summary><div class="wk">Week<b>${w.w}</b></div><div class="ttl"><h3>${w.t}</h3><small>${w.sub} · Foe: ${FOES[w.w]}</small></div><div class="cnt" id="c-${w.w}"></div></summary>
-    <div class="body">
-      <p class="quest">${w.q}</p>
-      <p class="na">Play this chapter with your Guide: <code>/teach-me-system-design start week ${w.w}</code></p>
-      ${parts.join("")}
-      <div class="scroll"><label for="n-${w.w}">Prediction scroll: ${w.p}</label>
-        <textarea id="n-${w.w}" data-n="${w.w}" placeholder="Write your guess before you start. Add what really happened afterwards.">${esc(S.notes[w.w]||"")}</textarea></div>
-      <p class="loot"><b>Loot:</b> ${w.loot}</p>
-    </div></details>`;
+function note(key,label,ph,rows){
+  return `<div class="field"><label class="lbl" for="n-${key}">${label}</label><textarea id="n-${key}" data-n="${key}" rows="${rows||3}" placeholder="${esc(ph)}">${esc(S.notes[key]||"")}</textarea></div>`;
 }
+const RANKS=[[0,"Apprentice"],[5,"Journeyman"],[11,"Builder"],[17,"Architect"],[24,"Master Architect"]];
+const rankOf=n=>{let r=RANKS[0][1]; RANKS.forEach(([t,name])=>{if(n>=t) r=name}); return r;};
 
-function render(){
-  const acts=document.getElementById("acts");
-  acts.innerHTML=ACTS.map(a=>`<section class="act" id="act-${a.id}">
+/* ---------- map view ---------- */
+function card(w){
+  const b=beatsDone(w.w), cb=curBeat(w.w), cl=cleared(w.w), next=nextWeek();
+  const pips=BEATS.map((_,i)=>`<i class="${S.done[bk(w.w,i+1)]?"d":(i+1===cb&&b>0?"c":"")}"></i>`).join("");
+  const st=cl?"Cleared":(b?`Beat ${cb} · ${BEATS[cb-1][0]}`:"Not started");
+  return `<a class="card ${cl?"cleared":""} ${next&&next.w===w.w?"current":""}" href="#week-${w.w}">
+    <div class="wk">Week<b>${w.w}</b></div>
+    <div class="ttl"><h3>${w.t}${TH[w.w]?'<span class="has-codex">Codex</span>':""}</h3><small>${w.sub} · Foe: ${FOES[w.w]}</small></div>
+    <div class="meta"><div class="pips" aria-hidden="true">${pips}</div><div class="cnt">${st}</div></div></a>`;
+}
+const nextWeek=()=>W.find(w=>!cleared(w.w));
+function renderMap(){
+  $("acts").innerHTML=ACTS.map(a=>`<section class="act" id="act-${a.id}">
      <div class="act-head"><div class="eyebrow">Act ${a.n}</div><h2>${a.title}</h2><p>${a.story}</p></div>
-     ${W.filter(w=>w.act===a.id).map(chapter).join("")}</section>`).join("");
-  const first=W.find(w=>!tasksOf(w).every(k=>S.done[k]));
-  if(first){const d=document.getElementById("ch-"+first.w); if(d) d.open=true;}
-  update();
-}
-
-const RANKS=[[0,"Apprentice"],[0.2,"Journeyman"],[0.45,"Builder"],[0.7,"Architect"],[1,"Master Architect"]];
-function update(){
-  const n=ALL.filter(k=>S.done[k]).length, f=ALL.length?n/ALL.length:0;
-  document.getElementById("pct").textContent=`${n} / ${ALL.length} tasks · ${Math.round(f*100)}%`;
-  document.getElementById("barfill").style.width=(f*100)+"%";
-  let r=RANKS[0][1]; RANKS.forEach(([t,name])=>{if(f>=t)r=name});
-  document.getElementById("rank").innerHTML=`<small>Current rank</small>${r}`;
-  W.forEach(w=>{
-    const ks=tasksOf(w), d=ks.filter(k=>S.done[k]).length, c=document.getElementById("c-"+w.w);
-    if(c) c.textContent=d===ks.length?"Cleared":`${d} / ${ks.length}`;
-    const ch=document.getElementById("ch-"+w.w); if(ch) ch.classList.toggle("complete",d===ks.length);
-  });
-  document.getElementById("route").innerHTML=ACTS.map(a=>{
-    const ks=W.filter(w=>w.act===a.id).flatMap(tasksOf), d=ks.filter(k=>S.done[k]).length;
-    return `<a class="stop ${d===ks.length?"full":""}" href="#act-${a.id}"><div class="dot">${a.n}</div><span>${a.name}</span><em>${Math.round(d/ks.length*100)}%</em></a>`;
+     ${W.filter(w=>w.act===a.id).map(card).join("")}</section>`).join("");
+  const n=W.filter(w=>cleared(w.w)).length;
+  $("pct").textContent=`${n} / 25 weeks cleared`;
+  $("barfill").style.width=(n/25*100)+"%";
+  $("rank").innerHTML=`<small>Current rank</small>${rankOf(n)}`;
+  const nw=nextWeek();
+  $("next").innerHTML=nw?`<span class="next-t"><small>Next step</small>Week ${nw.w}: ${nw.t} · Beat ${curBeat(nw.w)}, ${BEATS[curBeat(nw.w)-1][0]}</span><a class="btn primary" href="#week-${nw.w}">Continue the lesson</a>`:`<span>The road is complete. You are a Master Architect.</span>`;
+  $("route").innerHTML=ACTS.map(a=>{
+    const ws=W.filter(w=>w.act===a.id), d=ws.filter(w=>cleared(w.w)).length;
+    return `<a class="stop ${d===ws.length?"full":""}" href="#act-${a.id}"><div class="dot">${a.n}</div><span>${a.name}</span><em>${d} / ${ws.length}</em></a>`;
   }).join("");
 }
 
+/* ---------- lesson view ---------- */
+function beatSec(w,i,body){
+  const done=S.done[bk(w,i)], cur=curBeat(w)===i;
+  return `<section class="beat ${done?"ok":""} ${cur?"cur":""}" id="b-${w}-${i}">
+    <div class="bhead"><h3><span>Beat ${i}</span>${BEATS[i-1][0]}</h3>
+    <button class="btn ${done?"on":""}" data-beat="${bk(w,i)}">${done?"Beat done ✓":"Mark beat done"}</button></div>${body}</section>`;
+}
+function concept(w,c,i){
+  const ak=`${w}-c${i}`, rk=`${w}-cr${i}`, gk=`${w}-cg${i}`, shown=!!S.done[rk], has=(S.notes[ak]||"").trim().length>=8;
+  const tb=c.tb?`<div class="tbl"><table><thead><tr>${c.tb[0].map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${c.tb.slice(1).map(r=>`<tr>${r.map((v,j)=>j?`<td>${v}</td>`:`<td><b>${v}</b></td>`).join("")}</tr>`).join("")}</tbody></table></div>`:"";
+  const dg=c.d?`<div class="dg"><pre>${esc(c.d)}</pre></div>`:"";
+  return `<article class="concept ${S.done[gk]?"got":""}" id="cc-${w}-${i}">
+    <h4><span>${i+1} / ${TH[w].c.length}</span>${c.t}</h4>
+    <div class="explain">${c.x}</div>${dg}${tb}
+    <div class="check">
+      <div class="q">Check: ${c.q}</div>
+      <textarea id="n-${ak}" data-n="${ak}" rows="2" placeholder="Your answer, in your own words.">${esc(S.notes[ak]||"")}</textarea>
+      <div class="row"><button class="btn" data-reveal="${rk}" ${has||shown?"":"disabled"}>${shown?"Answer shown":"Show the answer"}</button>
+      <span class="hint" ${has||shown?"hidden":""} data-hint="${ak}">Write your attempt first. A wrong guess still helps you remember.</span></div>
+      <div class="answer" ${shown?"":"hidden"}>${c.a}</div>
+      <div class="row" ${shown?"":"hidden"}><button class="btn ${S.done[gk]?"on":""}" data-got="${gk}">${S.done[gk]?"Understood ✓":"I can say it back in one sentence"}</button></div>
+    </div></article>`;
+}
+function renderLesson(n){
+  const w=W[n], th=TH[n], X=XT[n], D=DTS[n];
+  const R=w.read.map((l,i)=>task(n+"-r"+i,`${day(i?"Tue":"Mon")}${kind("Read","k-read",link(l))}${th&&th.look[i]?`<span class="look">Read for: ${th.look[i]}</span>`:""}`));
+  const Y=X.yt.map((l,i)=>task(n+"-y"+i,`${day(i?"Wed":"Tue")}${kind("YouTube","k-yt",link(l))}`));
+  const V=w.watch.map((l,i)=>task(n+"-w"+i,`${day("Wed")}${kind("Visualize","k-viz",link(l))}`));
+  const DT=D.l.map((l,i)=>task(n+"-d"+i,`${day(D.after?"Weekend":"Wed")}${kind(D.after?"Compare":"Step through","k-viz",link(l))}${D.after?"":'<span class="look">Before each step, say what will change in the numbers. Then press next.</span>'}`));
+  const B=w.build.map((t,i)=>task(n+"-b"+i,`${day(i<Math.ceil(w.build.length/2)?"Thu":"Fri")}${kind("Lab","k-lab",t)}`));
+  const G=X.gh.map((l,i)=>task(n+"-g"+i,`${day("Thu")}${kind("GitHub","k-gh",link(l))}<span class="look">Study how they do it, then write your own.</span>`));
+  const list=a=>a.length?`<ul class="tasks">${a.join("")}</ul>`:"";
+  const cold=th?th.cold:`First instinct: ${strip(w.q)} What would you do?`;
+
+  const b1=`<p class="quest">${w.q}</p><p class="prompt"><b>Cold question.</b> ${cold}</p>
+    ${note(n+"-cold","Your first answer","Any answer is fine. You'll compare it with your answer at the end of the week.")}`;
+  const b2=`<p class="prompt"><b>Prediction scroll.</b> ${w.p}</p>
+    ${note(String(n),"Your prediction (a number or a named outcome) and why","Be concrete. Fewer than 10, or more than 1,000? You'll check it against the Citadel in Beat 5.")}`;
+  const b3=(th?`<p class="na">Each idea is explained first, then checked. Write your answer before you open the Guide's.</p>${th.c.map((c,i)=>concept(n,c,i)).join("")}`
+      :`<div class="todo"><b>This Codex page is written when you reach this week.</b><span class="na">It will be shaped by your mistakes and questions from the weeks before. To start the week now, run <code>/teach-me-system-design start week ${n}</code>. Concepts for this week: ${(CONCEPTS[n]||[]).join(", ")}.</span></div>`)
+    +`<h4>Targeted reading</h4>${list(R.concat(Y.slice(0,1)))||'<p class="na">No reading this week.</p>'}`;
+  const b4=list(V.concat(D.after?[]:DT,Y.slice(1)))||`<p class="na">No visualizer this week. Your own Citadel is the view.</p>`;
+  const b4b=`<p class="na">Report to the Guide: what you did, what you saw, one surprise.</p>`;
+  const b5=`${list(B.concat(G))||'<p class="na">No lab this week.</p>'}
+    <p class="na">Spend the first 30 minutes alone before asking for help.</p>
+    ${note(n+"-real","What the Citadel showed (numbers, errors, timings)","Your scroll said… The Citadel said… The gap…")}`;
+  const sd=w.sd?task(n+"-sd",`${day("Weekend")}${kind("Simulator","k-viz",`Rebuild this week's piece in <a href="https://systemdesigner.io/" target="_blank" rel="noopener">systemdesigner.io</a> and push traffic until it breaks`)}`):"";
+  const b6=`<p class="prompt"><b>${FOES[n]}</b> attacks. ${w.boss}</p>
+    <ul class="tasks">${sd}${task(n+"-boss",`${day("Weekend")}${kind("Boss","k-boss","Submit your answer to the Guide: <code>/teach-me-system-design review my boss</code>")}`)}${D.after?DT.join(""):""}</ul>
+    ${note(n+"-bossdraft","Your draft (work alone, from memory)","Write it here first, then paste it to the Guide.",5)}`;
+  const tpl=`# Field Log: Week ${n}, ${w.t}   (Foe: ${FOES[n]})\n> 2–3 lines in your own voice: what the Citadel faced\n\nPrediction:  \nReality:     \nThe gap:     \nThe battle:  \nStill in fog: `;
+  const b7=`<div class="vs"><div class="field"><span class="lbl">What you said at the start</span><div class="then" id="then-${n}">${esc(S.notes[n+"-cold"]||"(no first answer yet)")}</div></div>
+    ${note(n+"-now","What you'd say now","Answer the cold question again.",4)}</div>
+    ${note(n+"-log","Field log",tpl,8)}
+    <p class="loot"><b>Loot:</b> ${w.loot}</p>`;
+
+  const act=ACTS.find(a=>a.id===w.act), cb=curBeat(n);
+  const prev=n>0?`<a href="#week-${n-1}">← Week ${n-1}: ${W[n-1].t}</a>`:"<span></span>", nxt=n<24?`<a href="#week-${n+1}">Week ${n+1}: ${W[n+1].t} →</a>`:"<span></span>";
+  $("v-lesson").innerHTML=`
+    <div class="crumbs"><a href="#map">← The map</a><span class="na">Act ${act.n} · Week ${n}</span></div>
+    <header class="lhead"><div class="eyebrow">${act.title}</div><h1>${w.t}</h1><div class="foe">Foe: ${FOES[n]} · ${w.sub}</div>
+      <p class="dayplan">Mon–Tue: beats 1–3 · Wed: beat 4 · Thu–Fri: beat 5 · Weekend: beats 6–7</p></header>
+    <ol class="beats" id="beats">${BEATS.map((b,i)=>`<li><a href="#week-${n}" data-jump="${i+1}" class="${S.done[bk(n,i+1)]?"d":(cb===i+1?"c":"")}"><b>${i+1}</b>${b[0]}</a></li>`).join("")}</ol>
+    ${beatSec(n,1,b1)}${beatSec(n,2,b2)}${beatSec(n,3,b3)}${beatSec(n,4,b4+b4b)}${beatSec(n,5,b5)}${beatSec(n,6,b6)}${beatSec(n,7,b7)}
+    <nav class="pager">${prev}${nxt}</nav>`;
+}
+function refreshLessonState(n){
+  const cb=curBeat(n);
+  document.querySelectorAll("#beats a").forEach(a=>{const i=+a.dataset.jump; a.className=S.done[bk(n,i)]?"d":(cb===i?"c":"");});
+  for(let i=1;i<=7;i++){const s=$(`b-${n}-${i}`); if(!s) continue; const d=!!S.done[bk(n,i)];
+    s.classList.toggle("ok",d); s.classList.toggle("cur",cb===i);
+    const b=s.querySelector("[data-beat]"); b.classList.toggle("on",d); b.textContent=d?"Beat done ✓":"Mark beat done";}
+}
+
+/* ---------- routing ---------- */
+let current=null;
+function route(){
+  const m=/^#week-(\d+)$/.exec(location.hash), n=m?+m[1]:-1;
+  if(n>=0&&n<W.length){
+    if(current!==n){current=n; renderLesson(n);}
+    $("v-map").hidden=true; $("v-lesson").hidden=false;
+    const cb=curBeat(n); const t=cb>1?$(`b-${n}-${cb}`):null;
+    if(t) t.scrollIntoView({block:"start"}); else window.scrollTo(0,0);
+  }else{
+    current=null; renderMap(); $("v-lesson").hidden=true; $("v-map").hidden=false;
+    const el=location.hash.length>1?document.getElementById(location.hash.slice(1)):null;
+    if(el) el.scrollIntoView({block:"start"}); else window.scrollTo(0,0);
+  }
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- interaction ---------- */
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button,[data-jump]"); if(!t) return;
+  if(t.dataset.jump){e.preventDefault(); const s=$(`b-${current}-${t.dataset.jump}`); if(s) s.scrollIntoView({block:"start",behavior:"smooth"}); return;}
+  if(t.dataset.beat){const k=t.dataset.beat; if(S.done[k]) delete S.done[k]; else S.done[k]=true; refreshLessonState(current); persist(); return;}
+  if(t.dataset.reveal){S.done[t.dataset.reveal]=true; const box=t.closest(".check"); box.querySelector(".answer").hidden=false; box.querySelectorAll(".row")[1].hidden=false; t.textContent="Answer shown"; persist(); return;}
+  if(t.dataset.got){const k=t.dataset.got; if(S.done[k]) delete S.done[k]; else S.done[k]=true; t.classList.toggle("on",!!S.done[k]); t.textContent=S.done[k]?"Understood ✓":"I can say it back in one sentence"; t.closest(".concept").classList.toggle("got",!!S.done[k]); persist();}
+});
 document.addEventListener("change",e=>{
   const k=e.target.dataset&&e.target.dataset.k; if(!k) return;
   if(e.target.checked) S.done[k]=true; else delete S.done[k];
-  update(); persist();
+  persist();
 });
 let noteTimer=null;
 document.addEventListener("input",e=>{
-  const n=e.target.dataset&&e.target.dataset.n; if(n===undefined) return;
-  S.notes[n]=e.target.value;
+  const k=e.target.dataset&&e.target.dataset.n; if(k===undefined) return;
+  S.notes[k]=e.target.value;
+  const hint=document.querySelector(`[data-hint="${k}"]`);
+  if(hint){const ok=e.target.value.trim().length>=8; hint.hidden=ok; const btn=hint.parentElement.querySelector("[data-reveal]"); if(btn&&!S.done[btn.dataset.reveal]) btn.disabled=!ok;}
+  if(/-cold$/.test(k)){const th=$("then-"+k.split("-")[0]); if(th) th.textContent=e.target.value||"(no first answer yet)";}
   clearTimeout(noteTimer); noteTimer=setTimeout(persist,600);
 });
 
-render();
+route();
 
-/* ---------- account sync (optional) ---------- */
+/* ---------- account sync + the Guide's progress (optional) ---------- */
 (async()=>{
   try{
     if(!window.claude||!window.claude.use) return;
@@ -514,16 +809,15 @@ render();
     const uid=await user.id(); if(!uid) return;
     const ref=db.doc("data/users/"+uid+"/progress");
     const timer=setTimeout(()=>{syncEl.textContent="Couldn't reach your account yet. Progress is kept in this browser.";},10000);
-    const snap=await ref.get(); clearTimeout(timer);
-    if(snap.exists){
-      const d=snap.data()||{};
-      S={done:Object.assign({},S.done,d.done||{}),notes:Object.assign({},S.notes,d.notes||{})};
-      try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
-      const openIds=[...document.querySelectorAll("details.ch[open]")].map(x=>x.id);
-      render();
-      openIds.forEach(id=>{const x=document.getElementById(id); if(x) x.open=true;});
-    }
+    const [snap,guide]=await Promise.all([ref.get(),db.doc("guide/progress").get().catch(()=>null)]);
+    clearTimeout(timer);
+    const mine=snap.exists?(snap.data()||{}):{}, g=guide&&guide.exists?(guide.data()||{}):{};
+    const before=JSON.stringify(S);
+    // The Guide's record only adds: it ticks beats and fills empty notes, never erases yours.
+    S={done:Object.assign({},g.done||{},S.done,mine.done||{}),notes:Object.assign({},g.notes||{},S.notes,mine.notes||{})};
+    Object.keys(g.done||{}).forEach(k=>{S.done[k]=true});
     dbRef=ref;
+    if(JSON.stringify(S)!==before){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} const keep=current; current=null; if(keep!==null){current=keep; renderLesson(keep);} else renderMap(); persist();}
     syncEl.textContent="Progress is saved to your account and follows you to other devices.";
   }catch(e){ /* keep browser-only progress */ }
 })();
