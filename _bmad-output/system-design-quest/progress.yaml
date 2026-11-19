@@ -1,0 +1,28 @@
+# The Architect's Road: learner progress
+# Written by teach-me-system-design. Safe to edit by hand.
+
+learner:
+  name: "Duke"
+  language: "Go + Java, chosen per Citadel component (decision written down each time)"
+  docker_ready: false        # WSL2 v2 + Docker CLI 29.9 / Compose v5.6 installed; Docker Desktop engine stopped; no Go/Java locally (build in containers)
+  hours_per_week: 7          # ~1h+/day, 7 days a week
+  started_on: "2026-11-18"
+  teaching_style: "teach-first: short explanation, then a check question. Predictions still come before experiments (labs, visualizers)."
+
+current_week: 0
+streak_weeks: 0
+
+misconceptions: []
+
+weeks:
+  "0":
+    status: in-progress
+    beat: 3
+    started_on: "2026-11-18"
+    cleared_on: null
+    cold_answer: "Different library versions; I would put it in a container."
+    prediction: "B: a normal Linux process fenced off so it thinks it is alone; starts in under 1 second."
+    prediction_score: null
+    max_hint: 0
+    boss_verdict: null
+    lenses: {}

@@ -32,7 +32,7 @@ Go through `concepts` one at a time. For each concept:
 
 Then hand them the `read` list as **targeted reading**: "Read X looking for the answer to *this specific question*." Never say "read this" without a question to read for. Add the week's first `youtube` item from `data/daily-resources.yaml` the same way ("Watch for the moment they explain ___"). Give the `github` repos with the Build Mission as *reference to study*, not code to copy: "Open this repo and find how they ___; then write yours."
 
-Follow the day plan when the learner asks "what do I do today?": Mon read[0] · Tue rest of read + youtube[0] · Wed watch + youtube[1:] · Thu first half of build + github · Fri second half of build, break + measure · Weekend sandbox + boss.
+Follow the day plan when the learner asks "what do I do today?": Mon read[0] · Tue rest of read + youtube[0] · Wed watch + stepthrough + youtube[1:] · Thu first half of build + github · Fri second half of build, break + measure · Weekend sandbox + boss.
 
 ## Beat 4 · The Watch Mission
 
@@ -40,6 +40,8 @@ Give the `watch` item as a mission with:
 - **Objective:** one observable thing to find ("Find the moment the leader changes; how long were there zero leaders?")
 - **Prediction tie-in:** "Does this match your scroll?"
 - **Report format:** "Tell me: what you did, what you saw, one surprise."
+
+Also hand out the week's `stepthrough` lessons from `data/daily-resources.yaml` (designed-to-scale: scripted animated diagrams with live metrics). Rule: **before each step, the learner says what will change in the numbers** (p95, errors, CPU), then presses next. It shows *why* each piece gets added; it is not a sandbox, so the Citadel and systemdesigner.io stay the places where they decide and break things. If the week has `after_boss: true`, hold these lessons back until Beat 6 is submitted and use them as the reference design to compare against.
 
 Wait for the report. Then debrief: connect what they saw to the concepts. If `watch` is empty, say the Citadel is this week's lens and go to Beat 5.
 

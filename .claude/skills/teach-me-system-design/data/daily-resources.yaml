@@ -1,5 +1,5 @@
 # Daily resources per week: YouTube (channel search links) + GitHub repos to study.
-# All links checked 2026-11-18. Day plan: Mon read[0] | Tue rest of read + youtube[0] | Wed watch + youtube[1:] | Thu build (first half) + github | Fri build (second half), break + measure | Weekend sandbox + boss.
+# All links checked 2026-11-18. `stepthrough` = designed-to-scale.vercel.app lessons (free animated step-through diagrams; scripted, not a sandbox). `after_boss: true` = open only after the boss is submitted. Day plan: Mon read[0] | Tue rest of read + youtube[0] | Wed watch + stepthrough + youtube[1:] | Thu build (first half) + github | Fri build (second half), break + measure | Weekend sandbox + boss.
 weeks:
   0:
     youtube:
@@ -7,6 +7,10 @@ weeks:
     github:
       - {title: "docker/awesome-compose: ready-made compose examples", url: "https://github.com/docker/awesome-compose"}
   1:
+    stepthrough:
+      - {title: "How a Request Travels", url: "https://designed-to-scale.vercel.app/#/request-lifecycle/1"}
+      - {title: "Latency & Throughput", url: "https://designed-to-scale.vercel.app/#/latency-throughput/1"}
+      - {title: "Napkin Math", url: "https://designed-to-scale.vercel.app/#/napkin-math/1"}
     youtube:
       - {title: "Hussein Nasser: TCP", url: "https://www.youtube.com/@hnasr/search?query=TCP"}
       - {title: "ByteByteGo: what happens when you type a URL", url: "https://www.youtube.com/@ByteByteGo/search?query=what%20happens%20when%20you%20type%20a%20URL"}
@@ -19,12 +23,18 @@ weeks:
     github:
       - {title: "system-design-101 (visual explainers)", url: "https://github.com/ByteByteGoHq/system-design-101"}
   3:
+    stepthrough:
+      - {title: "REST, RPC & GraphQL", url: "https://designed-to-scale.vercel.app/#/apis/1"}
     youtube:
       - {title: "Hussein Nasser: HTTP/2", url: "https://www.youtube.com/@hnasr/search?query=HTTP/2"}
       - {title: "ByteByteGo: gRPC", url: "https://www.youtube.com/@ByteByteGo/search?query=gRPC"}
     github:
       - {title: "grpc/grpc: examples for every language", url: "https://github.com/grpc/grpc"}
   4:
+    stepthrough:
+      - {title: "Vertical vs Horizontal Scaling", url: "https://designed-to-scale.vercel.app/#/vertical-horizontal/1"}
+      - {title: "Load Balancing", url: "https://designed-to-scale.vercel.app/#/load-balancing/1"}
+      - {title: "Stateless Services", url: "https://designed-to-scale.vercel.app/#/stateless/1"}
     youtube:
       - {title: "ByteByteGo: load balancer", url: "https://www.youtube.com/@ByteByteGo/search?query=load%20balancer"}
       - {title: "Hussein Nasser: load balancing", url: "https://www.youtube.com/@hnasr/search?query=load%20balancing"}
@@ -32,24 +42,37 @@ weeks:
       - {title: "grafana/k6: load testing tool", url: "https://github.com/grafana/k6"}
       - {title: "docker/awesome-compose", url: "https://github.com/docker/awesome-compose"}
   5:
+    stepthrough:
+      - {title: "Caching", url: "https://designed-to-scale.vercel.app/#/caching/1"}
     youtube:
       - {title: "ByteByteGo: cache", url: "https://www.youtube.com/@ByteByteGo/search?query=cache"}
       - {title: "Hussein Nasser: redis", url: "https://www.youtube.com/@hnasr/search?query=redis"}
     github:
       - {title: "karanpratapsingh/system-design (caching chapter)", url: "https://github.com/karanpratapsingh/system-design"}
   6:
+    stepthrough:
+      - {title: "SQL vs NoSQL", url: "https://designed-to-scale.vercel.app/#/sql-nosql/1"}
+      - {title: "Indexes", url: "https://designed-to-scale.vercel.app/#/indexes/1"}
+      - {title: "Storage Engines", url: "https://designed-to-scale.vercel.app/#/storage-engines/1"}
     youtube:
       - {title: "Hussein Nasser: database index", url: "https://www.youtube.com/@hnasr/search?query=database%20index"}
       - {title: "ByteByteGo: database index", url: "https://www.youtube.com/@ByteByteGo/search?query=database%20index"}
     github:
       - {title: "karanpratapsingh/system-design (databases)", url: "https://github.com/karanpratapsingh/system-design"}
   7:
+    stepthrough:
+      - {title: "Replication", url: "https://designed-to-scale.vercel.app/#/replication/1"}
+      - {title: "Sharding", url: "https://designed-to-scale.vercel.app/#/sharding/1"}
+      - {title: "Consistent Hashing", url: "https://designed-to-scale.vercel.app/#/consistent-hashing/1"}
     youtube:
       - {title: "Hussein Nasser: replication", url: "https://www.youtube.com/@hnasr/search?query=replication"}
       - {title: "ByteByteGo: sharding", url: "https://www.youtube.com/@ByteByteGo/search?query=sharding"}
     github:
       - {title: "karanpratapsingh/system-design (replication, sharding)", url: "https://github.com/karanpratapsingh/system-design"}
   8:
+    stepthrough:
+      - {title: "Message Queues", url: "https://designed-to-scale.vercel.app/#/queues/1"}
+      - {title: "Pub/Sub & Events", url: "https://designed-to-scale.vercel.app/#/pubsub/1"}
     youtube:
       - {title: "ByteByteGo: kafka", url: "https://www.youtube.com/@ByteByteGo/search?query=kafka"}
       - {title: "Confluent: kafka 101", url: "https://www.youtube.com/@Confluent/search?query=kafka%20101"}
@@ -57,12 +80,17 @@ weeks:
       - {title: "confluentinc/cp-all-in-one: Kafka compose files", url: "https://github.com/confluentinc/cp-all-in-one"}
       - {title: "kafbat/kafka-ui", url: "https://github.com/kafbat/kafka-ui"}
   9:
+    stepthrough:
+      - {title: "Batch & Stream Processing", url: "https://designed-to-scale.vercel.app/#/batch-stream/1"}
     youtube:
       - {title: "Confluent: consumer group", url: "https://www.youtube.com/@Confluent/search?query=consumer%20group"}
       - {title: "Hussein Nasser: kafka", url: "https://www.youtube.com/@hnasr/search?query=kafka"}
     github:
       - {title: "confluentinc/cp-all-in-one", url: "https://github.com/confluentinc/cp-all-in-one"}
   10:
+    stepthrough:
+      - {title: "Consensus & Leader Election", url: "https://designed-to-scale.vercel.app/#/consensus/1"}
+      - {title: "CAP & Consistency", url: "https://designed-to-scale.vercel.app/#/cap/1"}
     youtube:
       - {title: "MIT 6.824 Raft lecture (search): MIT 6.824 raft lecture", url: "https://www.youtube.com/results?search_query=MIT+6.824+raft+lecture"}
       - {title: "ByteByteGo: raft", url: "https://www.youtube.com/@ByteByteGo/search?query=raft"}
@@ -70,6 +98,10 @@ weeks:
       - {title: "etcd-io/etcd", url: "https://github.com/etcd-io/etcd"}
       - {title: "MIT 6.5840 Distributed Systems course (labs)", url: "https://pdos.csail.mit.edu/6.824/"}
   11:
+    stepthrough:
+      - {title: "Redundancy & Failover", url: "https://designed-to-scale.vercel.app/#/redundancy/1"}
+      - {title: "Rate Limiting", url: "https://designed-to-scale.vercel.app/#/rate-limiting/1"}
+      - {title: "Timeouts & Retries", url: "https://designed-to-scale.vercel.app/#/timeouts-retries/1"}
     youtube:
       - {title: "ByteByteGo: circuit breaker", url: "https://www.youtube.com/@ByteByteGo/search?query=circuit%20breaker"}
       - {title: "Gaurav Sen: rate limiting", url: "https://www.youtube.com/@gkcs/search?query=rate%20limiting"}
@@ -77,28 +109,43 @@ weeks:
       - {title: "Shopify/toxiproxy", url: "https://github.com/Shopify/toxiproxy"}
       - {title: "resilience4j (study the patterns)", url: "https://github.com/resilience4j/resilience4j"}
   12:
+    stepthrough:
+      - {title: "Observability", url: "https://designed-to-scale.vercel.app/#/observability/1"}
     youtube:
       - {title: "TechWorld with Nana: prometheus", url: "https://www.youtube.com/@TechWorldwithNana/search?query=prometheus"}
       - {title: "ByteByteGo: observability", url: "https://www.youtube.com/@ByteByteGo/search?query=observability"}
     github:
       - {title: "prometheus/prometheus", url: "https://github.com/prometheus/prometheus"}
   13:
+    stepthrough:
+      - {title: "Design a URL Shortener", url: "https://designed-to-scale.vercel.app/#/design-url-shortener/1"}
+      - {title: "Unique IDs at Scale", url: "https://designed-to-scale.vercel.app/#/unique-ids/1"}
+    after_boss: true
     youtube:
       - {title: "ByteByteGo (watch AFTER your design): url shortener", url: "https://www.youtube.com/@ByteByteGo/search?query=url%20shortener"}
     github:
       - {title: "ashishps1/awesome-system-design-resources", url: "https://github.com/ashishps1/awesome-system-design-resources"}
   14:
+    stepthrough:
+      - {title: "Design a Chat System", url: "https://designed-to-scale.vercel.app/#/design-chat/1"}
+      - {title: "Real-time Updates", url: "https://designed-to-scale.vercel.app/#/realtime/1"}
+    after_boss: true
     youtube:
       - {title: "Gaurav Sen (watch AFTER your design): whatsapp", url: "https://www.youtube.com/@gkcs/search?query=whatsapp"}
       - {title: "ByteByteGo (watch AFTER your design): chat", url: "https://www.youtube.com/@ByteByteGo/search?query=chat"}
     github:
       - {title: "binhnguyennus/awesome-scalability", url: "https://github.com/binhnguyennus/awesome-scalability"}
   15:
+    stepthrough:
+      - {title: "Design a News Feed", url: "https://designed-to-scale.vercel.app/#/design-news-feed/1"}
+    after_boss: true
     youtube:
       - {title: "ByteByteGo (watch AFTER your design): news feed", url: "https://www.youtube.com/@ByteByteGo/search?query=news%20feed"}
     github:
       - {title: "binhnguyennus/awesome-scalability", url: "https://github.com/binhnguyennus/awesome-scalability"}
   16:
+    stepthrough:
+      - {title: "Transactions & Isolation", url: "https://designed-to-scale.vercel.app/#/transactions/1"}
     youtube:
       - {title: "ByteByteGo: API design", url: "https://www.youtube.com/@ByteByteGo/search?query=API%20design"}
       - {title: "Hussein Nasser: idempotency", url: "https://www.youtube.com/@hnasr/search?query=idempotency"}
@@ -106,6 +153,9 @@ weeks:
       - {title: "microsoft/api-guidelines", url: "https://github.com/microsoft/api-guidelines"}
       - {title: "zalando/restful-api-guidelines", url: "https://github.com/zalando/restful-api-guidelines"}
   17:
+    stepthrough:
+      - {title: "Content Delivery", url: "https://designed-to-scale.vercel.app/#/cdn/1"}
+      - {title: "Files & Media", url: "https://designed-to-scale.vercel.app/#/files/1"}
     youtube:
       - {title: "ByteByteGo: CDN", url: "https://www.youtube.com/@ByteByteGo/search?query=CDN"}
       - {title: "ByteByteGo: search", url: "https://www.youtube.com/@ByteByteGo/search?query=search"}
@@ -113,6 +163,10 @@ weeks:
       - {title: "minio/minio", url: "https://github.com/minio/minio"}
       - {title: "meilisearch/meilisearch", url: "https://github.com/meilisearch/meilisearch"}
   18:
+    stepthrough:
+      - {title: "Authentication", url: "https://designed-to-scale.vercel.app/#/authentication/1"}
+      - {title: "Authorization", url: "https://designed-to-scale.vercel.app/#/authorization/1"}
+      - {title: "Encryption & Secrets", url: "https://designed-to-scale.vercel.app/#/encryption/1"}
     youtube:
       - {title: "ByteByteGo: OAuth", url: "https://www.youtube.com/@ByteByteGo/search?query=OAuth"}
       - {title: "Hussein Nasser: JWT", url: "https://www.youtube.com/@hnasr/search?query=JWT"}
@@ -120,6 +174,10 @@ weeks:
       - {title: "OWASP Cheat Sheet Series", url: "https://github.com/OWASP/CheatSheetSeries"}
       - {title: "OWASP Juice Shop (a legal practice target)", url: "https://github.com/juice-shop/juice-shop"}
   19:
+    stepthrough:
+      - {title: "Sagas & Distributed Transactions", url: "https://designed-to-scale.vercel.app/#/sagas/1"}
+      - {title: "Monolith vs Microservices", url: "https://designed-to-scale.vercel.app/#/microservices/1"}
+      - {title: "Service Discovery & Gateways", url: "https://designed-to-scale.vercel.app/#/service-discovery/1"}
     youtube:
       - {title: "ByteByteGo: saga", url: "https://www.youtube.com/@ByteByteGo/search?query=saga"}
       - {title: "ByteByteGo: CQRS", url: "https://www.youtube.com/@ByteByteGo/search?query=CQRS"}
@@ -139,6 +197,8 @@ weeks:
     github:
       - {title: "codecrafters-io/build-your-own-x", url: "https://github.com/codecrafters-io/build-your-own-x"}
   23:
+    stepthrough:
+      - {title: "HLD & LLD", url: "https://designed-to-scale.vercel.app/#/hld-lld/1"}
     youtube:
       - {title: "Architecture decision records (search): architecture decision records", url: "https://www.youtube.com/results?search_query=architecture+decision+records"}
     github:

@@ -112,7 +112,7 @@ The city starts empty. By week 12 it looks like this, and every box is something
 | When | What | Where |
 |---|---|---|
 | **Mon – Tue** | 📖 Read the theory | Papers, books, engineering blogs |
-| **Wed** | 👀 Watch it run | Visualizers: samwho.dev, Raft, B-trees, Kafka |
+| **Wed** | 👀 Watch it run | Visualizers (samwho.dev, Raft, B-trees, Kafka) + [designed-to-scale](https://designed-to-scale.vercel.app/) step-through lessons |
 | **Thu – Fri** | 🔨 Build it, then break it | My Docker lab: `citadel/` |
 | **Weekend** | 🐉 Boss battle + field log | systemdesigner.io + the Guide |
 
